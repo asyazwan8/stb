@@ -130,7 +130,8 @@ async function main() {
 
   // Flat colour art — a small palette keeps the stand-in tiny.
   await sharp(svg(mastheadSvg()))
-    .png({ palette: true, colors: 32, compressionLevel: 9 })
+    .resize({ width: 1000 })
+    .png({ palette: true, colors: 16, compressionLevel: 9, effort: 10 })
     .toFile(new URL("brand/stb-masthead.png", OUT).pathname);
 
   await sharp(
