@@ -128,8 +128,9 @@ async function main() {
   await mkdir(new URL("references/", OUT), { recursive: true });
   await mkdir(new URL("places/", OUT), { recursive: true });
 
+  // Flat colour art — a small palette keeps the stand-in tiny.
   await sharp(svg(mastheadSvg()))
-    .png()
+    .png({ palette: true, colors: 32, compressionLevel: 9 })
     .toFile(new URL("brand/stb-masthead.png", OUT).pathname);
 
   await sharp(
@@ -144,7 +145,8 @@ async function main() {
       }),
     ),
   )
-    .jpeg({ quality: 88 })
+    .resize({ width: 562 })
+    .jpeg({ quality: 72, mozjpeg: true })
     .toFile(new URL("references/iban-female.jpg", OUT).pathname);
 
   await sharp(
@@ -159,14 +161,16 @@ async function main() {
       }),
     ),
   )
-    .jpeg({ quality: 88 })
+    .resize({ width: 512 })
+    .jpeg({ quality: 72, mozjpeg: true })
     .toFile(new URL("references/iban-male.jpg", OUT).pathname);
 
   for (const place of PLACES) {
     await sharp(
       svg(placeSvg({ w: 1080, h: 1440, from: place.from, to: place.to, name: place.name })),
     )
-      .jpeg({ quality: 82 })
+      .resize({ width: 480 })
+      .jpeg({ quality: 68, mozjpeg: true })
       .toFile(new URL(`places/${place.id}.jpg`, OUT).pathname);
   }
 
