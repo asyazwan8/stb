@@ -8,10 +8,25 @@
  * the real assets".
  */
 import sharp from "sharp";
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import { PLACES } from "./places.data.mjs";
 
 const OUT = new URL("../public/", import.meta.url);
+
+/**
+ * Never overwrite a real asset. Once STB's actual photography is dropped in,
+ * this script must quietly do nothing — it runs on every build (see the
+ * "prebuild" script) so that a fresh clone or a file-upload deploy still has
+ * artwork to render.
+ */
+async function missing(relative) {
+  try {
+    await access(new URL(relative, OUT));
+    return false;
+  } catch {
+    return true;
+  }
+}
 
 const LETTERS = [
   ["S", "#e4272c"],
@@ -129,12 +144,14 @@ async function main() {
   await mkdir(new URL("places/", OUT), { recursive: true });
 
   // Flat colour art — a small palette keeps the stand-in tiny.
-  await sharp(svg(mastheadSvg()))
+  if (await missing("brand/stb-masthead.png"))
+    await sharp(svg(mastheadSvg()))
     .resize({ width: 1000 })
     .png({ palette: true, colors: 16, compressionLevel: 9, effort: 10 })
     .toFile(new URL("brand/stb-masthead.png", OUT).pathname);
 
-  await sharp(
+  if (await missing("references/iban-female.jpg"))
+    await sharp(
     svg(
       referenceSvg({
         w: 843,
@@ -150,7 +167,8 @@ async function main() {
     .jpeg({ quality: 72, mozjpeg: true })
     .toFile(new URL("references/iban-female.jpg", OUT).pathname);
 
-  await sharp(
+  if (await missing("references/iban-male.jpg"))
+    await sharp(
     svg(
       referenceSvg({
         w: 768,
@@ -167,6 +185,7 @@ async function main() {
     .toFile(new URL("references/iban-male.jpg", OUT).pathname);
 
   for (const place of PLACES) {
+    if (!(await missing(`places/${place.id}.jpg`))) continue;
     await sharp(
       svg(placeSvg({ w: 1080, h: 1440, from: place.from, to: place.to, name: place.name })),
     )
@@ -175,12 +194,13 @@ async function main() {
       .toFile(new URL(`places/${place.id}.jpg`, OUT).pathname);
   }
 
-  await writeFile(
+  if (await missing("references/README.txt"))
+    await writeFile(
     new URL("references/README.txt", OUT),
     "Replace iban-female.jpg and iban-male.jpg with the real Sarawak Tourism Board\nreference portraits. Keep the filenames identical. Portrait orientation, ideally\n1000-1600px on the long edge, JPEG. After replacing, check the headgear hotspot\nstill lines up: open the learn screen with ?calibrate=1 and tap to read new\ncoordinates, then update lib/ethnics.ts.\n",
   );
 
-  console.log("Placeholder assets written to public/");
+  console.log("Placeholder check complete (existing assets left untouched).");
 }
 
 main().catch((err) => {
