@@ -1,5 +1,6 @@
-// Generated from lib/places.ts — keep in sync.
-export const PLACES = [] = [
+// Mirrors the PLACES array in lib/places.ts — keep the two in sync.
+// Only id/name/from/to are used, to render the stand-in place art.
+export const PLACES = [
   {
     id: "mulu",
     name: "Gunung Mulu",
@@ -36,4 +37,4 @@ export const PLACES = [] = [
     from: "#3f2a5e",
     to: "#8a5fb0",
   },
-]
+];
