@@ -71,11 +71,11 @@ export function EthnicSelectScreen({
         </div>
       ) : null}
 
-      <div className="pointer-events-none absolute -bottom-[1%] -left-[5%] w-[34%]">
-        <Hornbill pose={6} rotate={3} className="w-full" />
+      <div className="pointer-events-none absolute bottom-[15%] left-[-2%] w-[20%]">
+        <Hornbill pose={3} className="w-full" />
       </div>
-      <div className="pointer-events-none absolute bottom-[14%] right-[-3%] w-[24%]">
-        <Hornbill pose={3} flip className="w-full" />
+      <div className="pointer-events-none absolute bottom-[13%] right-[-4%] w-[32%]">
+        <Hornbill pose={7} className="w-full" />
       </div>
 
       <StepBar

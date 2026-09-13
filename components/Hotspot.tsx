@@ -2,6 +2,14 @@
 
 import type { Hotspot as HotspotData } from "@/lib/ethnics";
 
+/**
+ * Tap target over a piece of the costume.
+ *
+ * Deliberately restrained: the reference photography is the thing worth
+ * looking at, so the marker is small, mostly transparent and carries no label.
+ * The name and description belong in the sheet that opens on tap, not burned
+ * over the picture.
+ */
 export function Hotspot({
   hotspot,
   active,
@@ -17,60 +25,39 @@ export function Hotspot({
     <button
       type="button"
       onClick={() => onTap(hotspot)}
+      // The accessible name carries what the visible label used to.
       aria-label={
-        live
-          ? `${hotspot.label}: ${hotspot.name}`
-          : `${hotspot.name} — coming soon`
+        live ? `${hotspot.label}: ${hotspot.name}` : `${hotspot.name} — coming soon`
       }
-      className="absolute -translate-x-1/2 -translate-y-1/2 touch-manipulation"
+      className="absolute flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center touch-manipulation"
       style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}
     >
-      <span className="relative flex flex-col items-center gap-2">
+      {/* A translucent white ring alone vanishes over a bright area of the
+          photograph — the male headdress, for instance. Pairing it with a soft
+          dark halo and a solid centre dot keeps the marker legible on any
+          background while staying small and unobtrusive. */}
+      <span
+        className={`flex items-center justify-center rounded-full border transition duration-200 ${
+          live
+            ? `h-9 w-9 border-white/85 ${
+                active
+                  ? "scale-110 bg-white/30"
+                  : "bg-white/10 animate-hotspot"
+              }`
+            : "h-7 w-7 border-white/50 bg-white/[0.06]"
+        }`}
+        style={{
+          boxShadow: live
+            ? "0 0 0 1px rgba(0,0,0,0.22), 0 1px 5px rgba(0,0,0,0.32)"
+            : "0 0 0 1px rgba(0,0,0,0.16)",
+        }}
+      >
         <span
-          className={`flex h-16 w-16 items-center justify-center rounded-full border-2 backdrop-blur-[2px] transition duration-200 ${
-            live
-              ? `border-white/85 bg-white/25 ${active ? "scale-110 bg-white/45" : ""} animate-hotspot`
-              : "border-white/35 bg-black/25"
+          className={`rounded-full transition ${
+            live ? `h-2 w-2 ${active ? "bg-gold" : "bg-white"}` : "h-1.5 w-1.5 bg-white/70"
           }`}
-        >
-          {live ? (
-            <span
-              className={`h-3.5 w-3.5 rounded-full transition ${
-                active ? "bg-gold" : "bg-white"
-              }`}
-            />
-          ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <rect
-                x="4"
-                y="10"
-                width="16"
-                height="11"
-                rx="2"
-                stroke="white"
-                strokeOpacity="0.7"
-                strokeWidth="2.5"
-              />
-              <path
-                d="M8 10V7a4 4 0 018 0v3"
-                stroke="white"
-                strokeOpacity="0.7"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          )}
-        </span>
-
-        <span
-          className={`whitespace-nowrap rounded-full px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] ${
-            live
-              ? "bg-white/90 text-ink shadow-sm"
-              : "bg-black/45 text-white/70"
-          }`}
-        >
-          {hotspot.label}
-        </span>
+          style={{ boxShadow: "0 0 3px rgba(0,0,0,0.5)" }}
+        />
       </span>
     </button>
   );

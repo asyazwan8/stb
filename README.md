@@ -126,13 +126,18 @@ are the real names of real institutions.
 
 The birds are sliced out of a single supplied artwork sheet:
 
-1. Drop the sheet at `public/hornbills/sheet.png` (`.jpg`/`.jpeg`/`.webp` also work)
+1. Drop the sheet at `public/hornbill/sheet.png` (`.jpg`/`.jpeg`/`.webp` also work)
 2. `npm run hornbills`
 
 That writes `hornbill-1.png … hornbill-N.png`, numbered top-to-bottom then
-left-to-right, cut out with transparent backgrounds. The slicer flood-fills the
-background inward from the border rather than treating every white pixel as
-background, so white markings *inside* a bird — the tail bands — stay opaque.
+left-to-right, cut out with transparent backgrounds.
+
+The slicer adapts to the sheet: it keys on **alpha** when the artwork is
+transparent, and otherwise **samples the background colour from the border**
+rather than assuming white — an earlier version assumed white and returned one
+full-sheet blob when handed a black-background sheet. It also masks each crop
+to that bird's own pixels, so an overlapping neighbour cannot bleed into the
+frame, and white markings *inside* a bird (the tail bands) stay opaque.
 
 Screens reference poses by number, e.g. `<Hornbill pose={5} flip rotate={-6} />`.
 If the artwork is absent the component removes itself, so the layout is designed

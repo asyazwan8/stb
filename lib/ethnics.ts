@@ -74,7 +74,7 @@ export const ETHNICS: Ethnic[] = [
             description:
               "The “tall comb” — a crown of hammered silver worn with the full ngepan indu. Its height and the number of silver leaves traditionally signalled a family's standing, and most are heirlooms handed down through generations.",
             x: 47,
-            y: 23,
+            y: 25,
             status: "live",
           },
           {
@@ -83,7 +83,7 @@ export const ETHNICS: Ethnic[] = [
             name: "Marik Empang",
             description: "",
             x: 49,
-            y: 44,
+            y: 42,
             status: "coming-soon",
           },
           {
@@ -101,7 +101,7 @@ export const ETHNICS: Ethnic[] = [
             name: "Kain Kebat",
             description: "",
             x: 48,
-            y: 75,
+            y: 77,
             status: "coming-soon",
           },
         ],
@@ -120,8 +120,8 @@ export const ETHNICS: Ethnic[] = [
             name: "Ketapu",
             description:
               "A woven rattan cap crowned with the barred feathers of the argus pheasant and the hornbill — the bird the Iban hold sacred. Worn with the ngepan lelaki, it once marked a man's standing in the longhouse.",
-            x: 43,
-            y: 20,
+            x: 47,
+            y: 30,
             status: "live",
           },
           {
@@ -130,7 +130,7 @@ export const ETHNICS: Ethnic[] = [
             name: "Baju Burung",
             description: "",
             x: 50,
-            y: 47,
+            y: 45,
             status: "coming-soon",
           },
           {
@@ -138,7 +138,7 @@ export const ETHNICS: Ethnic[] = [
             label: "Blade",
             name: "Ilang",
             description: "",
-            x: 32,
+            x: 33,
             y: 56,
             status: "coming-soon",
           },
@@ -148,7 +148,7 @@ export const ETHNICS: Ethnic[] = [
             name: "Sirat",
             description: "",
             x: 50,
-            y: 65,
+            y: 66,
             status: "coming-soon",
           },
         ],

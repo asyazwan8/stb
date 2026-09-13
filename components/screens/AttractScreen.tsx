@@ -8,20 +8,23 @@ export function AttractScreen({ onStart }: { onStart: () => void }) {
     <div className="relative flex h-full flex-col overflow-hidden bg-white">
       {/* Hornbills fill the quiet corners of a very tall panel. Big and in
           flight up top, smaller and perched down low. */}
-      <div className="animate-float absolute -left-[12%] top-[6%] w-[62%]">
-        <Hornbill pose={5} rotate={-6} className="w-full" />
+      {/* In flight across the top band, at rest along the bottom band. Sized
+          and offset to stay clear of the masthead and the footer copy — the
+          logo is the hero and nothing may cross it. */}
+      <div className="animate-float absolute -left-[8%] -top-[8%] w-[46%]">
+        <Hornbill pose={5} rotate={-5} className="w-full" />
       </div>
       <div
-        className="animate-float absolute -right-[8%] top-[26%] w-[38%]"
-        style={{ animationDelay: "-2.3s" }}
+        className="animate-float absolute -right-[5%] top-[4%] w-[28%]"
+        style={{ animationDelay: "-2.6s" }}
       >
-        <Hornbill pose={2} flip rotate={8} className="w-full" />
+        <Hornbill pose={1} flip rotate={7} className="w-full" />
       </div>
-      <div className="absolute -bottom-[2%] -left-[4%] w-[32%]">
-        <Hornbill pose={8} rotate={4} className="w-full" />
+      <div className="absolute bottom-[14%] left-[1%] w-[34%]">
+        <Hornbill pose={6} className="w-full" />
       </div>
-      <div className="absolute bottom-[9%] right-[1%] w-[28%]">
-        <Hornbill pose={4} flip rotate={-3} className="w-full" />
+      <div className="absolute bottom-[13%] right-[4%] w-[17%]">
+        <Hornbill pose={8} rotate={3} className="w-full" />
       </div>
 
       <main className="relative flex flex-1 flex-col items-center justify-center px-8 text-center">

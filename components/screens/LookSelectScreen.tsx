@@ -81,8 +81,8 @@ export function LookSelectScreen({
         </div>
       </main>
 
-      <div className="pointer-events-none absolute bottom-[12%] right-[-4%] w-[30%]">
-        <Hornbill pose={7} flip rotate={-4} className="w-full" />
+      <div className="pointer-events-none absolute bottom-[11%] right-[-3%] w-[22%]">
+        <Hornbill pose={4} className="w-full" />
       </div>
 
       <StepBar

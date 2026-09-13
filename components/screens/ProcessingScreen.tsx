@@ -83,8 +83,8 @@ export function ProcessingScreen({
     <div className="relative flex h-full flex-col overflow-hidden bg-white">
       <Masthead compact />
 
-      <div className="animate-float pointer-events-none absolute right-[-6%] top-[7%] w-[30%]">
-        <Hornbill pose={1} flip rotate={-5} className="w-full" />
+      <div className="animate-float pointer-events-none absolute right-[-5%] top-[5%] w-[26%]">
+        <Hornbill pose={2} flip rotate={-4} className="w-full" />
       </div>
 
       <main className="kiosk-reach-bottom relative flex min-h-0 flex-1 flex-col px-8">
