@@ -1,58 +1,66 @@
 /**
- * Shown on the processing screen while the portrait renders — the wait is
- * turned into a moment of destination promotion, which is the point of the
- * kiosk for STB.
+ * Sarawak destinations promoted on the kiosk — on the attract loop, and again
+ * on the processing screen while the portrait renders, so the wait becomes a
+ * moment of destination marketing rather than dead time.
  *
- * Drop real photography into /public/places using these exact filenames and
- * the cards pick it up with no code change.
+ * PHOTOGRAPHY: these are LANDSCAPE images, shown as an editorial band at their
+ * natural aspect so nothing is cropped away on the portrait panel. Drop real
+ * photos into /public/places using these exact filenames — no code change.
+ * Landscape, roughly 16:9, 1600x900 or larger.
+ *
+ * NOTE FOR STB: copy below should be reviewed before the demo.
  */
 
 export type Place = {
   id: string;
   name: string;
   region: string;
+  /** One short line — this is signage, not a brochure. */
   hook: string;
   image: string;
-  /** Fallback wash used behind/instead of photography. */
+  /** Wash used behind the band, and instead of it before photos are dropped in. */
   from: string;
   to: string;
 };
 
+/** All four destination photos are landscape; the band reserves this shape. */
+export const PLACE_ASPECT = { w: 16, h: 9 };
+
 export const PLACES: Place[] = [
   {
-    id: "mulu",
-    name: "Gunung Mulu",
-    region: "Miri Division",
-    hook: "A UNESCO World Heritage rainforest over some of the largest cave chambers on earth.",
-    image: "/places/mulu.jpg",
-    from: "#0f3d2e",
-    to: "#1f7a4d",
+    id: "borneo-cultures-museum",
+    name: "Borneo Cultures Museum",
+    region: "Kuching",
+    hook: "Five floors of Borneo's living heritage, in the heart of the old town.",
+    image: "/places/borneo-cultures-museum.jpg",
+    from: "#5c2412",
+    to: "#c8641f",
   },
   {
-    id: "bako",
+    id: "sarawak-cultural-village",
+    name: "Sarawak Cultural Village",
+    region: "Santubong, Kuching",
+    hook: "A living museum below Mount Santubong, with ethnic houses kept by the communities themselves.",
+    image: "/places/sarawak-cultural-village.jpg",
+    from: "#123d2c",
+    to: "#3f9b64",
+  },
+  {
+    id: "bako-national-park",
     name: "Bako National Park",
-    region: "Kuching Division",
+    region: "Kuching",
     hook: "Sarawak's oldest national park — sea stacks, mangrove and wild proboscis monkeys.",
-    image: "/places/bako.jpg",
+    image: "/places/bako-national-park.jpg",
     from: "#123b56",
-    to: "#2f88b8",
+    to: "#3d92c4",
   },
   {
-    id: "kuching",
-    name: "Kuching Waterfront",
-    region: "Kuching Division",
-    hook: "The Sarawak River promenade, at its best when the light goes gold.",
-    image: "/places/kuching.jpg",
-    from: "#7a2d16",
-    to: "#ea6a25",
-  },
-  {
-    id: "santubong",
-    name: "Santubong",
-    region: "Kuching Division",
-    hook: "A rainforest mountain by the sea, and home of the Rainforest World Music Festival.",
-    image: "/places/santubong.jpg",
-    from: "#3f2a5e",
-    to: "#8a5fb0",
+    id: "semenggoh-wildlife-centre",
+    name: "Semenggoh Wildlife Centre",
+    region: "Kuching",
+    hook: "Rehabilitated orangutans, living free in the reserve and returning at feeding time.",
+    image: "/places/semenggoh-wildlife-centre.jpg",
+    from: "#3f2e12",
+    to: "#a8802c",
   },
 ];

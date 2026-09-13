@@ -63,7 +63,7 @@ export function Hotspot({
         </span>
 
         <span
-          className={`whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.1em] ${
+          className={`whitespace-nowrap rounded-full px-2.5 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.1em] ${
             live
               ? "bg-white/90 text-ink shadow-sm"
               : "bg-black/45 text-white/70"

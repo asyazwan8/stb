@@ -1,8 +1,8 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
-import { Ribbon } from "@/components/Masthead";
+import { Masthead, Ribbon } from "@/components/Masthead";
+import { PlaceBand } from "@/components/PlaceBand";
 import { PLACES } from "@/lib/places";
 import type { SwapState } from "@/lib/useFaceSwap";
 
@@ -45,17 +45,16 @@ export function ProcessingScreen({
   }, []);
 
   const place = PLACES[placeIndex];
-  const failed = state.phase === "error";
 
-  if (failed) {
+  if (state.phase === "error") {
     return (
       <div className="flex h-full flex-col bg-cream">
         <Ribbon />
-        <main className="flex flex-1 flex-col items-center justify-center px-8 text-center">
+        <main className="kiosk-reach-bottom flex flex-1 flex-col items-center justify-center px-8 text-center">
           <h1 className="font-display text-4xl font-bold text-ink">
             That didn&rsquo;t work
           </h1>
-          <p className="mt-3 max-w-md text-[17px] leading-relaxed text-bark">
+          <p className="mt-3 max-w-md text-[1.0625rem] leading-relaxed text-bark">
             {state.error}
           </p>
           <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
@@ -80,67 +79,50 @@ export function ProcessingScreen({
   }
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden bg-bark">
-      {/* Destination promotion — the wait is the pitch. */}
-      {PLACES.map((p, i) => (
-        <div
-          key={p.id}
-          aria-hidden={i !== placeIndex}
-          className="absolute inset-0 transition-opacity duration-1000"
-          style={{
-            opacity: i === placeIndex ? 1 : 0,
-            background: `linear-gradient(160deg, ${p.to}, ${p.from})`,
-          }}
-        >
-          <img
-            src={p.image}
-            alt=""
-            className={`h-full w-full object-cover ${i === placeIndex ? "animate-ken-burns" : ""}`}
-          />
-        </div>
-      ))}
+    <div className="flex h-full flex-col bg-cream">
+      <Masthead compact />
 
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(20,15,11,0.45) 0%, rgba(20,15,11,0.15) 35%, rgba(20,15,11,0.85) 100%)",
-        }}
-      />
+      <main className="kiosk-reach-bottom flex min-h-0 flex-1 flex-col px-6">
+        <div className="flex-[0.45]" />
 
-      <div className="relative flex flex-1 flex-col justify-between px-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-[max(1.75rem,env(safe-area-inset-top))]">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-white/70">
+        {/* Destination promotion — the wait is the pitch. Landscape photography
+            sits at its own aspect rather than being cropped to the panel. */}
+        <div className="shrink-0">
+          <p className="text-xs font-bold uppercase tracking-[0.24em] text-stb-hornbill">
             While you wait — visit
           </p>
+
+          <PlaceBand activeIndex={placeIndex} className="mt-3 shadow-xl" />
+
           <h2
             key={place.id}
-            className="animate-fade-up mt-2 font-display text-[clamp(2.2rem,8vw,3.4rem)] font-bold leading-tight text-white"
+            className="animate-fade-up mt-5 font-display text-4xl font-bold leading-tight text-ink"
           >
             {place.name}
           </h2>
-          <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-white/60">
+          <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-muted">
             {place.region}
           </p>
           <p
             key={`${place.id}-hook`}
-            className="animate-fade mt-3 max-w-md text-[17px] leading-relaxed text-white/90"
+            className="animate-fade mt-3 max-w-md text-[1.0625rem] leading-relaxed text-bark"
           >
             {place.hook}
           </p>
         </div>
 
-        <div className="rounded-3xl bg-ink/55 p-6 backdrop-blur-md">
+        <div className="flex-1" />
+
+        <div className="shrink-0 rounded-3xl bg-ink p-6 shadow-xl">
           <div className="flex items-center justify-between gap-4">
             <p
               key={statusIndex}
-              className="animate-fade text-lg font-semibold text-white"
+              className="animate-fade text-lg font-semibold text-cream"
               role="status"
             >
               {STATUS_COPY[statusIndex]}
             </p>
-            <span className="font-display text-lg font-bold tabular-nums text-white/80">
+            <span className="font-display text-lg font-bold tabular-nums text-cream/80">
               {Math.round(state.progress)}%
             </span>
           </div>
@@ -161,19 +143,19 @@ export function ProcessingScreen({
           </div>
 
           <div className="mt-4 flex items-center justify-between gap-4">
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-cream/60">
               Creating your portrait — this takes under a minute.
             </p>
             <button
               type="button"
               onClick={onCancel}
-              className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-white/60 underline underline-offset-4"
+              className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-cream/60 underline underline-offset-4"
             >
               Cancel
             </button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

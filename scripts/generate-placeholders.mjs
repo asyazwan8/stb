@@ -9,7 +9,37 @@
  */
 import sharp from "sharp";
 import { access, mkdir, writeFile } from "node:fs/promises";
-import { PLACES } from "./places.data.mjs";
+import { readFile } from "node:fs/promises";
+
+/**
+ * Read the destination list straight out of lib/places.ts.
+ *
+ * This used to be a hand-mirrored copy, which silently went stale the moment
+ * the real destinations landed and left the generator writing art under the
+ * old filenames. One source of truth instead — the file is a plain literal,
+ * and a mismatch here fails the build loudly rather than quietly.
+ */
+async function loadPlaces() {
+  const src = await readFile(new URL("../lib/places.ts", import.meta.url), "utf8");
+  const body = src.slice(src.indexOf("export const PLACES"));
+  const field = (block, name) =>
+    block.match(new RegExp(`${name}:\\s*"([^"]*)"`))?.[1];
+
+  const places = [...body.matchAll(/\{([^{}]*)\}/g)]
+    .map((m) => m[1])
+    .map((block) => ({
+      id: field(block, "id"),
+      name: field(block, "name"),
+      from: field(block, "from"),
+      to: field(block, "to"),
+    }))
+    .filter((p) => p.id && p.name && p.from && p.to);
+
+  if (places.length === 0) {
+    throw new Error("Could not parse any places out of lib/places.ts");
+  }
+  return places;
+}
 
 const OUT = new URL("../public/", import.meta.url);
 const APP = new URL("../app/", import.meta.url);
@@ -140,14 +170,16 @@ function placeSvg({ w, h, from, to, name }) {
   ${ridge(h * 0.58, 0.16, 1.2)}
   ${ridge(h * 0.68, 0.26, 2.1)}
   ${ridge(h * 0.79, 0.4, 0.6)}
-  <rect y="${h * 0.86}" width="${w}" height="${h * 0.14}" fill="#000" fill-opacity="0.55"/>
-  <text x="${w * 0.5}" y="${h * 0.94}" fill="#ffffff" font-family="DejaVu Sans Mono" font-size="${Math.round(h * 0.032)}" text-anchor="middle" opacity="0.75">placeholder — replace with a photo of ${name}</text>
+  <rect x="${w * 0.08}" y="${h * 0.42}" width="${w * 0.84}" height="${h * 0.16}" rx="14" fill="#000" fill-opacity="0.45"/>
+  <text x="${w * 0.5}" y="${h * 0.505}" fill="#ffffff" font-family="DejaVu Sans Mono" font-size="${Math.round(h * 0.042)}" text-anchor="middle" opacity="0.85">placeholder — ${name}</text>
 </svg>`;
 }
 
 const svg = (markup) => Buffer.from(markup);
 
 async function main() {
+  const PLACES = await loadPlaces();
+
   await mkdir(new URL("brand/", OUT), { recursive: true });
   await mkdir(new URL("references/", OUT), { recursive: true });
   await mkdir(new URL("places/", OUT), { recursive: true });
@@ -201,10 +233,10 @@ async function main() {
   for (const place of PLACES) {
     if (!(await missing(`places/${place.id}.jpg`))) continue;
     await sharp(
-      svg(placeSvg({ w: 1080, h: 1440, from: place.from, to: place.to, name: place.name })),
+      svg(placeSvg({ w: 1600, h: 900, from: place.from, to: place.to, name: place.name })),
     )
-      .resize({ width: 480 })
-      .jpeg({ quality: 68, mozjpeg: true })
+      .resize({ width: 800 })
+      .jpeg({ quality: 70, mozjpeg: true })
       .toFile(new URL(`places/${place.id}.jpg`, OUT).pathname);
   }
 

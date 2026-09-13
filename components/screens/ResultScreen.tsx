@@ -39,7 +39,7 @@ export function ResultScreen({
     <div className="flex h-full flex-col bg-cream">
       <Masthead compact />
 
-      <main className="flex min-h-0 flex-1 flex-col px-6 pb-4">
+      <main className="kiosk-reach-bottom flex min-h-0 flex-1 flex-col px-6">
         <div className="mx-auto flex min-h-0 w-full max-w-2xl flex-1 flex-col">
           <div className="animate-fade-up shrink-0 text-center">
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-stb-hornbill">
@@ -48,7 +48,7 @@ export function ResultScreen({
             <h1 className="mt-1 font-display text-3xl font-bold text-ink">
               {look.name}
             </h1>
-            <p className="mt-0.5 text-[14px] text-muted">
+            <p className="mt-0.5 text-sm text-muted">
               {ethnic.name} traditional dress
             </p>
           </div>
@@ -72,7 +72,7 @@ export function ResultScreen({
                   alt="Sarawak — Gateway to Borneo"
                   className="h-7 w-auto brightness-0 invert"
                 />
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/85">
+                <p className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-white/85">
                   AI Photobooth
                 </p>
               </div>
@@ -86,7 +86,7 @@ export function ResultScreen({
 
             <div className="flex flex-1 flex-col justify-between gap-3">
               <div className="rounded-3xl bg-sand/70 px-5 py-3.5">
-                <p className="text-[15px] leading-relaxed text-bark">
+                <p className="text-[0.9375rem] leading-relaxed text-bark">
                   Scan the code to save your portrait, then come and see the real
                   thing — the {ethnic.name} welcome visitors to their longhouses
                   along Sarawak&rsquo;s rivers.

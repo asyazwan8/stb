@@ -32,7 +32,7 @@ export function InfoSheet({
         className="absolute inset-0 bg-ink/45 animate-fade"
       />
 
-      <div className="animate-fade-up relative w-full rounded-t-[2rem] bg-cream p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl">
+      <div className="animate-fade-up kiosk-reach-bottom relative w-full rounded-t-[2rem] bg-cream p-6 shadow-2xl">
         <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-bark/15" aria-hidden />
 
         <div className="mx-auto w-full max-w-xl">
@@ -44,11 +44,11 @@ export function InfoSheet({
           </h3>
 
           {live ? (
-            <p className="mt-3 text-[17px] leading-relaxed text-bark">
+            <p className="mt-3 text-[1.0625rem] leading-relaxed text-bark">
               {hotspot.description}
             </p>
           ) : (
-            <p className="mt-3 text-[17px] leading-relaxed text-muted">
+            <p className="mt-3 text-[1.0625rem] leading-relaxed text-muted">
               We&rsquo;re still writing this one. In the full experience, every
               piece of the {hotspot.name.toLowerCase()} gets its own story.
             </p>

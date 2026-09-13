@@ -137,7 +137,7 @@ export function CameraScreen({
             <h1 className="animate-fade-up font-display text-4xl font-bold text-ink">
               {shot ? "Happy with this?" : "Look at the camera"}
             </h1>
-            <p className="animate-fade-up mt-2 text-[16px] leading-relaxed text-bark">
+            <p className="animate-fade-up mt-2 text-base leading-relaxed text-bark">
               {shot
                 ? "We'll place your face into the portrait you chose."
                 : "Centre your face in the oval, then tap the button below."}
@@ -162,7 +162,7 @@ export function CameraScreen({
                   {/* Face guide */}
                   {state === "ready" ? (
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                      <div className="h-[62%] w-[52%] -translate-y-[6%] rounded-[50%] border-[3px] border-dashed border-white/65" />
+                      <div className="h-[62%] w-[52%] -translate-y-[6%] rounded-[50%] border-[0.1875rem] border-dashed border-white/65" />
                     </div>
                   ) : null}
 

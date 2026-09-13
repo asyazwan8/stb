@@ -27,7 +27,7 @@ export function LookSelectScreen({
           <h1 className="animate-fade-up font-display text-4xl font-bold text-ink">
             Choose your look
           </h1>
-          <p className="animate-fade-up mt-2 text-[17px] leading-relaxed text-bark">
+          <p className="animate-fade-up mt-2 text-[1.0625rem] leading-relaxed text-bark">
             The {ethnic.name} have distinct ceremonial dress for women and men.
           </p>
 

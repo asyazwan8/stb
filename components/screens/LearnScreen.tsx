@@ -48,7 +48,7 @@ export function LearnScreen({
               <p className="text-sm font-semibold italic text-muted">{look.name}</p>
             </div>
 
-            <p className="animate-fade-up mt-2 text-[16px] leading-relaxed text-bark">
+            <p className="animate-fade-up mt-2 text-base leading-relaxed text-bark">
               {ethnic.description}
             </p>
           </div>
@@ -89,7 +89,7 @@ export function LearnScreen({
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-stb-hornbill/60 bg-white/70">
               <span className="h-2 w-2 rounded-full bg-stb-hornbill" />
             </span>
-            <p className="text-[15px] font-medium leading-snug text-bark">
+            <p className="text-[0.9375rem] font-medium leading-snug text-bark">
               Tap a circle on the photo to learn what it means.
             </p>
           </div>

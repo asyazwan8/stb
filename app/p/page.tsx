@@ -42,7 +42,7 @@ export default async function DownloadPage({
               <h1 className="text-center font-display text-3xl font-bold text-ink">
                 Your Sarawak portrait
               </h1>
-              <p className="mt-2 text-center text-[15px] leading-relaxed text-bark">
+              <p className="mt-2 text-center text-[0.9375rem] leading-relaxed text-bark">
                 Tap and hold the image to save it, or use the button below.
               </p>
 
@@ -75,7 +75,7 @@ export default async function DownloadPage({
                 <p className="font-display text-xl font-bold text-ink">
                   More to discover
                 </p>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-bark">
+                <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-bark">
                   Longhouses on the Rejang, caves at Mulu, rainforest at Bako —
                   Sarawak is the gateway to Borneo.
                 </p>
@@ -86,7 +86,7 @@ export default async function DownloadPage({
               <h1 className="font-display text-3xl font-bold text-ink">
                 Nothing to show
               </h1>
-              <p className="mt-3 text-[15px] leading-relaxed text-bark">
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-bark">
                 This link is missing a portrait, or it has expired. Scan the QR
                 code on the photobooth screen again.
               </p>

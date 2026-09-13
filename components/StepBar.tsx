@@ -19,7 +19,7 @@ export function StepBar({
   hint,
 }: Props) {
   return (
-    <footer className="kiosk-no-select w-full shrink-0 border-t border-bark/10 bg-cream/90 px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur">
+    <footer className="kiosk-no-select w-full shrink-0 border-t border-bark/10 bg-cream/90 kiosk-reach-bottom px-5 pt-4 backdrop-blur">
       <div className="mx-auto flex w-full max-w-3xl items-center gap-4">
         {onBack ? (
           <button

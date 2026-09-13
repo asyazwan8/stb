@@ -26,7 +26,42 @@
 }
 
 /* ------------------------------------------------------------------
-   Kiosk base — this runs full-screen on a tablet in portrait.
+   Kiosk scale.
+
+   The target is a 1080x1920 floor-standing panel viewed from about a
+   metre, so everything has to be physically larger than a tablet layout.
+   Rather than retune each screen, the root font size is driven by the
+   width of the 9:16 stage — and because Tailwind's spacing and type
+   scales are rem-based, the entire UI scales with it.
+
+   --kiosk-divisor is the single knob: smaller = bigger UI.
+   At 1080 wide this lands a ~25px root, so text-4xl is ~56px and an
+   h-16 button is ~100px tall.
+   ------------------------------------------------------------------ */
+:root {
+  --kiosk-divisor: 43;
+  --stage-w: min(100vw, calc(100dvh * 9 / 16));
+}
+
+/*
+ * Scoped to the kiosk page only — the stage carries .kiosk-stage.
+ *
+ * The download page (/p) is viewed on a phone and must keep a normal 16px
+ * base, so it deliberately does not match. Scaling the root globally forced a
+ * readability floor that broke the kiosk's proportions on short viewports:
+ * a letterboxed 506x900 preview rendered at 15px when proportion wanted
+ * ~11.8px, so the design overflowed and clipped. Scoping lets the kiosk scale
+ * purely proportionally with a floor low enough never to bind in practice.
+ *
+ * Falls back to 16px where :has() is unsupported — smaller than intended, but
+ * never broken.
+ */
+html:has(.kiosk-stage) {
+  font-size: clamp(10px, calc(var(--stage-w) / var(--kiosk-divisor)), 34px);
+}
+
+/* ------------------------------------------------------------------
+   Kiosk base — full-screen, portrait.
    No text selection, no bounce, no pinch zoom, no tap highlight.
    ------------------------------------------------------------------ */
 html,
@@ -52,6 +87,16 @@ button,
 .kiosk-no-select {
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* Keeps interactive rows out of the unreachable bottom band of a tall
+   floor-standing panel. Collapses to a normal safe-area inset on short
+   screens, where the bottom edge is perfectly reachable. */
+.kiosk-reach-bottom {
+  padding-bottom: max(
+    env(safe-area-inset-bottom),
+    calc(100dvh * 0.07)
+  );
 }
 
 /* The signature multicolour ribbon lifted from the logo's letterforms. */

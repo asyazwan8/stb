@@ -1,8 +1,10 @@
 # Sarawak AI Photobooth
 
-A kiosk demo for the **Sarawak Tourism Board**. A visitor picks a culture, learns
-what the traditional dress means, takes a photo, and gets their face composited
-into an authentic reference portrait — then scans a QR code to take it home.
+A kiosk demo for the **Sarawak Tourism Board**, built for a **9:16 vertical
+kiosk** (1080×1920, large floor-standing panel). A visitor picks a culture,
+learns what the traditional dress means, takes a photo, and gets their face
+composited into an authentic reference portrait — then scans a QR code to take
+it home.
 
 Built as a pitch demo, so parts are deliberately marked **Coming soon**: three of
 the four ethnic groups, and every costume hotspot except the headgear.
@@ -22,9 +24,22 @@ push; Vercel redeploys automatically.
 | `public/references/iban-female.jpg` | The Iban *Ngepan Indu* reference portrait (portrait orientation) |
 | `public/references/iban-male.jpg` | The Iban *Ngepan Lelaki* reference portrait (portrait orientation) |
 
-Optionally drop real destination photography into `public/places/` as
-`mulu.jpg`, `bako.jpg`, `kuching.jpg`, `santubong.jpg` — these fill the loading
-screen and need no code change.
+### Destination photography
+
+Four **landscape** photos drive the attract loop and the loading screen. Drop
+them into `public/places/` with these exact filenames:
+
+| File | Place |
+| --- | --- |
+| `borneo-cultures-museum.jpg` | Borneo Cultures Museum, Kuching |
+| `sarawak-cultural-village.jpg` | Sarawak Cultural Village, Santubong |
+| `bako-national-park.jpg` | Bako National Park |
+| `semenggoh-wildlife-centre.jpg` | Semenggoh Wildlife Centre |
+
+Landscape, roughly 16:9, 1600×900 or larger. They are shown as an editorial
+band at their natural aspect — **never cropped to the portrait panel** — so the
+whole frame is always visible. The place list in `lib/places.ts` is the single
+source of truth; the placeholder generator reads it directly.
 
 ### After replacing a reference photo
 
@@ -79,9 +94,30 @@ which is what lets a fresh clone build without any binaries present.
 
 The camera needs HTTPS or `localhost`. On a tablet, use the deployed URL.
 
+## Kiosk layout
+
+The whole UI scales from one number. `app/globals.css` sets the root font size
+from the width of the 9:16 stage, and because Tailwind's spacing and type
+scales are rem-based, everything follows:
+
+```css
+html:has(.kiosk-stage) {
+  font-size: clamp(10px, calc(var(--stage-w) / var(--kiosk-divisor)), 34px);
+}
+```
+
+- **`--kiosk-divisor` is the knob** — smaller means a bigger UI. At 1080 wide it
+  lands a ~25px root, sized for viewing from about a metre.
+- On any screen that isn't 9:16 the app **letterboxes** to an exact 9:16 column
+  against a dark surround, so a laptop preview shows what the real kiosk looks
+  like. On a phone the cap never binds and it fills the screen.
+- The scale is scoped to the kiosk page; `/p` keeps a normal 16px phone base.
+- `.kiosk-reach-bottom` keeps controls clear of the low band at the base of a
+  floor-standing panel — nothing interactive sits flush to the bottom edge.
+
 ## Notes for the demo
 
-- Designed for a **tablet in portrait**. Every screen fits without scrolling.
+- Every screen fits without scrolling at 1080×1920.
 - The result screen clears itself after 90 seconds.
 - Visitor photos are sent once to fal to create the portrait and are not stored
   by this app.

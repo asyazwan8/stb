@@ -37,7 +37,7 @@ export function EthnicSelectScreen({
           <h1 className="animate-fade-up font-display text-4xl font-bold text-ink">
             Choose a culture
           </h1>
-          <p className="animate-fade-up mt-2 text-[17px] leading-relaxed text-bark">
+          <p className="animate-fade-up mt-2 text-[1.0625rem] leading-relaxed text-bark">
             Sarawak is home to more than 30 ethnic groups. Pick one to see its
             traditional dress up close.
           </p>

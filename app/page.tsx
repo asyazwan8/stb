@@ -155,10 +155,19 @@ function Fallback({ onRestart }: { onRestart: () => void }) {
 
 export default function Page() {
   return (
-    <div className="h-dvh w-full overflow-hidden">
-      <Suspense fallback={<div className="h-full bg-cream" />}>
-        <Photobooth />
-      </Suspense>
+    // The kiosk is a 9:16 panel. On anything wider we centre an exact 9:16
+    // stage against a dark surround, so a laptop preview shows precisely what
+    // the installed kiosk looks like rather than a stretched approximation.
+    // On a phone (taller than 9:16) the cap never binds and it fills the screen.
+    <div className="flex h-dvh w-full items-center justify-center overflow-hidden bg-neutral-950">
+      <div
+        className="kiosk-stage relative h-dvh w-full overflow-hidden bg-cream shadow-2xl"
+        style={{ maxWidth: "calc(100dvh * 9 / 16)" }}
+      >
+        <Suspense fallback={<div className="h-full bg-cream" />}>
+          <Photobooth />
+        </Suspense>
+      </div>
     </div>
   );
 }
