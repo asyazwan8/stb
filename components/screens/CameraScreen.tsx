@@ -128,16 +128,16 @@ export function CameraScreen({
   const busy = countdown !== null;
 
   return (
-    <div className="flex h-full flex-col bg-cream">
+    <div className="flex h-full flex-col bg-white">
       <Masthead compact step={{ current: 3, total: 4, label: "Take your photo" }} />
 
       <main className="flex min-h-0 flex-1 flex-col px-6 pb-4">
         <div className="mx-auto flex min-h-0 w-full max-w-2xl flex-1 flex-col">
           <div className="shrink-0">
-            <h1 className="animate-fade-up font-display text-4xl font-bold text-ink">
+            <h1 className="animate-fade-up font-display tracking-tight text-4xl font-extrabold text-ink">
               {shot ? "Happy with this?" : "Look at the camera"}
             </h1>
-            <p className="animate-fade-up mt-2 text-base leading-relaxed text-bark">
+            <p className="animate-fade-up mt-2 text-base leading-relaxed text-muted">
               {shot
                 ? "We'll place your face into the portrait you chose."
                 : "Centre your face in the oval, then tap the button below."}
@@ -146,7 +146,7 @@ export function CameraScreen({
 
           {/* Height-driven: the capture button must never fall below the fold. */}
           <div className="flex min-h-0 flex-1 justify-center py-4">
-            <div className="relative h-full max-w-full overflow-hidden rounded-3xl bg-bark shadow-xl aspect-[3/4]">
+            <div className="relative h-full max-w-full overflow-hidden rounded-3xl bg-ink shadow-xl aspect-[3/4]">
               {shot ? (
                 <img src={shot} alt="Your photo" className="h-full w-full object-cover" />
               ) : (
@@ -167,19 +167,19 @@ export function CameraScreen({
                   ) : null}
 
                   {state === "starting" ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-bark">
-                      <p className="text-sm font-semibold text-cream/80">
+                    <div className="absolute inset-0 flex items-center justify-center bg-ink">
+                      <p className="text-sm font-semibold text-white/80">
                         Starting camera&hellip;
                       </p>
                     </div>
                   ) : null}
 
                   {state === "denied" || state === "error" ? (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-bark px-8 text-center">
-                      <p className="font-display text-2xl font-bold text-cream">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-ink px-8 text-center">
+                      <p className="font-display tracking-tight text-2xl font-bold text-white">
                         {state === "denied" ? "Camera blocked" : "Camera unavailable"}
                       </p>
-                      <p className="text-sm leading-relaxed text-cream/70">
+                      <p className="text-sm leading-relaxed text-white/70">
                         {state === "denied"
                           ? "Allow camera access for this site in your browser settings, then try again."
                           : (errorDetail ?? "Something went wrong reaching the camera.")}
@@ -187,7 +187,7 @@ export function CameraScreen({
                       <button
                         type="button"
                         onClick={() => void start()}
-                        className="mt-1 h-12 rounded-xl bg-cream px-6 font-bold text-ink transition active:scale-95"
+                        className="mt-1 h-12 rounded-xl bg-white px-6 font-bold text-ink transition active:scale-95"
                       >
                         Try again
                       </button>
@@ -198,7 +198,7 @@ export function CameraScreen({
                     <div className="absolute inset-0 flex items-center justify-center bg-ink/35">
                       <span
                         key={countdown}
-                        className="animate-fade font-display text-[9rem] font-bold leading-none text-white drop-shadow-2xl"
+                        className="animate-fade font-display tracking-tight text-[9rem] font-bold leading-none text-white drop-shadow-2xl"
                       >
                         {countdown}
                       </span>
@@ -216,14 +216,14 @@ export function CameraScreen({
               <button
                 type="button"
                 onClick={retake}
-                className="h-16 rounded-2xl border-2 border-bark/15 text-lg font-semibold text-bark transition active:scale-[0.97] active:bg-sand"
+                className="h-16 rounded-full border border-ink/20 text-lg font-semibold text-muted transition active:scale-[0.97] active:bg-surface"
               >
                 Retake
               </button>
               <button
                 type="button"
                 onClick={confirm}
-                className="h-16 rounded-2xl bg-stb-hornbill text-lg font-bold text-white shadow-lg shadow-stb-hornbill/25 transition active:scale-[0.97]"
+                className="h-16 rounded-full bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
               >
                 Use this photo
               </button>
@@ -233,7 +233,7 @@ export function CameraScreen({
               type="button"
               onClick={() => setCountdown(3)}
               disabled={state !== "ready" || busy}
-              className="h-20 w-full shrink-0 rounded-3xl bg-stb-hornbill text-2xl font-bold text-white shadow-xl shadow-stb-hornbill/25 transition active:scale-[0.97] disabled:bg-bark/20 disabled:text-bark/40 disabled:shadow-none"
+              className="h-20 w-full shrink-0 rounded-full bg-gold text-2xl font-bold text-white shadow-xl shadow-black/10 transition active:scale-[0.97] disabled:bg-ink/20 disabled:text-muted disabled:shadow-none"
             >
               {busy ? "Hold still…" : "Take photo"}
             </button>

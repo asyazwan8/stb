@@ -35,7 +35,7 @@ export function QrPanel({ imageUrl }: { imageUrl: string }) {
   }, [imageUrl]);
 
   return (
-    <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-bark/10 bg-white p-5 shadow-sm">
+    <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-line bg-white p-5 shadow-sm">
       <div className="flex h-[10.5rem] w-[10.5rem] items-center justify-center overflow-hidden rounded-xl bg-white">
         {qr ? (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -45,7 +45,7 @@ export function QrPanel({ imageUrl }: { imageUrl: string }) {
             QR unavailable
           </span>
         ) : (
-          <span className="h-full w-full animate-pulse rounded-xl bg-sand" />
+          <span className="h-full w-full animate-pulse rounded-xl bg-surface" />
         )}
       </div>
       <div className="text-center">

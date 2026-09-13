@@ -30,10 +30,11 @@ async function loadPlaces() {
     .map((block) => ({
       id: field(block, "id"),
       name: field(block, "name"),
+      image: field(block, "image"),
       from: field(block, "from"),
       to: field(block, "to"),
     }))
-    .filter((p) => p.id && p.name && p.from && p.to);
+    .filter((p) => p.id && p.name && p.image && p.from && p.to);
 
   if (places.length === 0) {
     throw new Error("Could not parse any places out of lib/places.ts");
@@ -109,81 +110,35 @@ function mastheadSvg() {
 }
 
 /** Obvious placeholder for a traditional reference portrait. */
-function referenceSvg({ w, h, title, subtitle, filename, accent }) {
+function referenceSvg({ w, h, title, subtitle, filename }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3a2a1c"/>
-      <stop offset="55%" stop-color="#241a12"/>
-      <stop offset="100%" stop-color="#160f0a"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="26%" r="55%">
-      <stop offset="0%" stop-color="${accent}" stop-opacity="0.42"/>
-      <stop offset="100%" stop-color="${accent}" stop-opacity="0"/>
-    </radialGradient>
-    <pattern id="planks" width="${w}" height="46" patternUnits="userSpaceOnUse">
-      <rect width="${w}" height="46" fill="none"/>
-      <line x1="0" y1="45" x2="${w}" y2="45" stroke="#000" stroke-opacity="0.25" stroke-width="2"/>
-    </pattern>
-  </defs>
-  <rect width="${w}" height="${h}" fill="url(#bg)"/>
-  <rect width="${w}" height="${h}" fill="url(#glow)"/>
-  <rect y="${h * 0.72}" width="${w}" height="${h * 0.28}" fill="url(#planks)"/>
-
-  <!-- figure silhouette -->
-  <g fill="#000" fill-opacity="0.42">
-    <ellipse cx="${w / 2}" cy="${h * 0.27}" rx="${w * 0.1}" ry="${h * 0.075}"/>
-    <path d="M ${w * 0.5} ${h * 0.345}
-             C ${w * 0.3} ${h * 0.4}, ${w * 0.26} ${h * 0.56}, ${w * 0.29} ${h * 0.74}
-             L ${w * 0.71} ${h * 0.74}
-             C ${w * 0.74} ${h * 0.56}, ${w * 0.7} ${h * 0.4}, ${w * 0.5} ${h * 0.345} Z"/>
+  <rect width="${w}" height="${h}" fill="#f6f5f2"/>
+  <g fill="#111111" fill-opacity="0.08">
+    <ellipse cx="${w / 2}" cy="${h * 0.3}" rx="${w * 0.11}" ry="${h * 0.08}"/>
+    <path d="M ${w * 0.5} ${h * 0.375}
+             C ${w * 0.3} ${h * 0.43}, ${w * 0.26} ${h * 0.58}, ${w * 0.29} ${h * 0.76}
+             L ${w * 0.71} ${h * 0.76}
+             C ${w * 0.74} ${h * 0.58}, ${w * 0.7} ${h * 0.43}, ${w * 0.5} ${h * 0.375} Z"/>
   </g>
-  <!-- headgear hint -->
-  <g stroke="${accent}" stroke-opacity="0.6" stroke-width="5" fill="none">
-    <path d="M ${w * 0.34} ${h * 0.21} L ${w * 0.5} ${h * 0.115} L ${w * 0.66} ${h * 0.21}"/>
-    <path d="M ${w * 0.38} ${h * 0.2} L ${w * 0.42} ${h * 0.14}"/>
-    <path d="M ${w * 0.5} ${h * 0.19} L ${w * 0.5} ${h * 0.125}"/>
-    <path d="M ${w * 0.62} ${h * 0.2} L ${w * 0.58} ${h * 0.14}"/>
+  <g stroke="#ef9521" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M ${w * 0.34} ${h * 0.235} L ${w * 0.5} ${h * 0.14} L ${w * 0.66} ${h * 0.235}"/>
+    <path d="M ${w * 0.5} ${h * 0.215} L ${w * 0.5} ${h * 0.15}"/>
   </g>
-
-  <rect x="${w * 0.08}" y="${h * 0.8}" width="${w * 0.84}" height="${h * 0.13}" rx="18" fill="#000" fill-opacity="0.55" stroke="${accent}" stroke-opacity="0.5" stroke-width="3" stroke-dasharray="12 10"/>
-  <text x="${w / 2}" y="${h * 0.852}" fill="#ffffff" font-family="Liberation Sans, DejaVu Sans" font-size="${Math.round(w * 0.052)}" font-weight="bold" text-anchor="middle">${title}</text>
-  <text x="${w / 2}" y="${h * 0.888}" fill="#e8d9c4" font-family="Liberation Sans, DejaVu Sans" font-size="${Math.round(w * 0.033)}" text-anchor="middle">${subtitle}</text>
-  <text x="${w / 2}" y="${h * 0.918}" fill="${accent}" font-family="DejaVu Sans Mono" font-size="${Math.round(w * 0.029)}" text-anchor="middle">${filename}</text>
+  <rect x="${w * 0.08}" y="${h * 0.81}" width="${w * 0.84}" height="${h * 0.12}" rx="10" fill="none" stroke="#111111" stroke-opacity="0.25" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="${w / 2}" y="${h * 0.858}" fill="#111111" font-family="Liberation Sans, DejaVu Sans" font-size="${Math.round(w * 0.05)}" font-weight="bold" text-anchor="middle">${title}</text>
+  <text x="${w / 2}" y="${h * 0.891}" fill="#6b6b6b" font-family="Liberation Sans, DejaVu Sans" font-size="${Math.round(w * 0.031)}" text-anchor="middle">${subtitle}</text>
+  <text x="${w / 2}" y="${h * 0.919}" fill="#6b6b6b" font-family="DejaVu Sans Mono" font-size="${Math.round(w * 0.026)}" text-anchor="middle">${filename}</text>
 </svg>`;
 }
 
-/** Abstract layered-ridge wash standing in for destination photography. */
-function placeSvg({ w, h, from, to, name }) {
-  const ridge = (yBase, opacity, amp) => {
-    const pts = [];
-    for (let i = 0; i <= 10; i += 1) {
-      const x = (w / 10) * i;
-      const y = yBase + Math.sin(i * 0.9 + amp) * amp * 26;
-      pts.push(`${x.toFixed(0)},${y.toFixed(0)}`);
-    }
-    return `<polygon points="0,${h} ${pts.join(" ")} ${w},${h}" fill="#000" fill-opacity="${opacity}"/>`;
-  };
-
+/** Neutral stand-in for destination photography. */
+function placeSvg({ w, h, name }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${to}"/>
-      <stop offset="100%" stop-color="${from}"/>
-    </linearGradient>
-    <radialGradient id="sun" cx="70%" cy="24%" r="34%">
-      <stop offset="0%" stop-color="#ffe9c2" stop-opacity="0.75"/>
-      <stop offset="100%" stop-color="#ffe9c2" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="url(#sky)"/>
-  <rect width="${w}" height="${h}" fill="url(#sun)"/>
-  <circle cx="${w * 0.7}" cy="${h * 0.26}" r="${h * 0.055}" fill="#fff3dc" fill-opacity="0.8"/>
-  ${ridge(h * 0.58, 0.16, 1.2)}
-  ${ridge(h * 0.68, 0.26, 2.1)}
-  ${ridge(h * 0.79, 0.4, 0.6)}
-  <rect x="${w * 0.08}" y="${h * 0.42}" width="${w * 0.84}" height="${h * 0.16}" rx="14" fill="#000" fill-opacity="0.45"/>
-  <text x="${w * 0.5}" y="${h * 0.505}" fill="#ffffff" font-family="DejaVu Sans Mono" font-size="${Math.round(h * 0.042)}" text-anchor="middle" opacity="0.85">placeholder — ${name}</text>
+  <rect width="${w}" height="${h}" fill="#f6f5f2"/>
+  <rect x="1" y="1" width="${w - 2}" height="${h - 2}" fill="none" stroke="#111111" stroke-opacity="0.12" stroke-width="2"/>
+  <line x1="${w * 0.34}" y1="${h * 0.6}" x2="${w * 0.66}" y2="${h * 0.6}" stroke="#ef9521" stroke-width="3" stroke-linecap="round"/>
+  <text x="${w * 0.5}" y="${h * 0.5}" fill="#111111" font-family="Liberation Sans, DejaVu Sans" font-size="${Math.round(h * 0.075)}" font-weight="bold" text-anchor="middle">${name}</text>
+  <text x="${w * 0.5}" y="${h * 0.72}" fill="#6b6b6b" font-family="DejaVu Sans Mono" font-size="${Math.round(h * 0.042)}" text-anchor="middle">placeholder photo</text>
 </svg>`;
 }
 
@@ -216,8 +171,7 @@ async function main() {
         h: 1265,
         title: "PLACEHOLDER",
         subtitle: "Iban — Ngepan Indu (female)",
-        filename: "public/references/iban-female.jpg",
-        accent: "#f2a030",
+        filename: "public/references/iban-female.jpeg",
       }),
     ),
   )
@@ -233,8 +187,7 @@ async function main() {
         h: 1280,
         title: "PLACEHOLDER",
         subtitle: "Iban — Ngepan Lelaki (male)",
-        filename: "public/references/iban-male.jpg",
-        accent: "#ea6a25",
+        filename: "public/references/iban-male.jpeg",
       }),
     ),
   )
@@ -243,13 +196,16 @@ async function main() {
     .toFile(new URL("references/iban-male.jpg", OUT).pathname);
 
   for (const place of PLACES) {
-    if (!(await missing(`places/${place.id}.jpg`))) continue;
+    // Keyed off the real path, so a photo whose filename differs from its id
+    // still counts as present.
+    const file = place.image.replace(/^\/+/, "").replace(/^places\//, "");
+    if (!(await missing(`places/${file}`))) continue;
     await sharp(
-      svg(placeSvg({ w: 1600, h: 900, from: place.from, to: place.to, name: place.name })),
+      svg(placeSvg({ w: 1600, h: 1200, name: place.name })),
     )
       .resize({ width: 800 })
       .jpeg({ quality: 70, mozjpeg: true })
-      .toFile(new URL(`places/${place.id}.jpg`, OUT).pathname);
+      .toFile(new URL(`places/${file}`, OUT).pathname);
   }
 
   if (await missing("references/README.txt"))

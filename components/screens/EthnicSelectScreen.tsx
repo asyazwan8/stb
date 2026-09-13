@@ -29,15 +29,15 @@ export function EthnicSelectScreen({
   };
 
   return (
-    <div className="flex h-full flex-col bg-cream">
-      <Masthead compact step={{ current: 0, total: 4, label: "Choose a culture" }} />
+    <div className="flex h-full flex-col bg-white">
+      <Masthead compact step={{ current: 0, total: 4, label: "Choose an ethnic group" }} />
 
       <main className="flex flex-1 flex-col justify-center overflow-y-auto px-6 pb-6">
         <div className="mx-auto w-full max-w-3xl">
-          <h1 className="animate-fade-up font-display text-4xl font-bold text-ink">
-            Choose a culture
+          <h1 className="animate-fade-up font-display tracking-tight text-4xl font-extrabold text-ink">
+            Choose an ethnic group
           </h1>
-          <p className="animate-fade-up mt-2 text-[1.0625rem] leading-relaxed text-bark">
+          <p className="animate-fade-up mt-2 text-[1.0625rem] leading-relaxed text-muted">
             Sarawak is home to more than 30 ethnic groups. Pick one to see its
             traditional dress up close.
           </p>
@@ -54,7 +54,7 @@ export function EthnicSelectScreen({
           </div>
 
           <p className="mt-6 text-center text-sm text-muted">
-            More cultures are being added for the full experience.
+            More ethnic groups are being added for the full experience.
           </p>
         </div>
       </main>
@@ -64,7 +64,7 @@ export function EthnicSelectScreen({
           role="status"
           className="animate-fade pointer-events-none fixed inset-x-0 bottom-32 z-40 flex justify-center px-6"
         >
-          <span className="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-cream shadow-xl">
+          <span className="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-xl">
             {toast}
           </span>
         </div>
@@ -74,7 +74,7 @@ export function EthnicSelectScreen({
         onBack={onBack}
         onNext={onNext}
         nextDisabled={!selectedId}
-        hint={selectedId ? undefined : "Select a culture to continue"}
+        hint={selectedId ? undefined : "Select an ethnic group to continue"}
       />
     </div>
   );

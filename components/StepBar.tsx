@@ -19,13 +19,13 @@ export function StepBar({
   hint,
 }: Props) {
   return (
-    <footer className="kiosk-no-select w-full shrink-0 border-t border-bark/10 bg-cream/90 kiosk-reach-bottom px-5 pt-4 backdrop-blur">
+    <footer className="kiosk-no-select w-full shrink-0 border-t border-line bg-white/90 kiosk-reach-bottom px-5 pt-4 backdrop-blur">
       <div className="mx-auto flex w-full max-w-3xl items-center gap-4">
         {onBack ? (
           <button
             type="button"
             onClick={onBack}
-            className="flex h-16 min-w-32 items-center justify-center gap-2 rounded-2xl border-2 border-bark/15 px-6 text-lg font-semibold text-bark transition active:scale-[0.97] active:bg-sand"
+            className="flex h-16 min-w-32 items-center justify-center gap-2 rounded-full border border-ink/20 px-6 text-lg font-semibold text-muted transition active:scale-[0.97] active:bg-surface"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path
@@ -53,7 +53,7 @@ export function StepBar({
             type="button"
             onClick={onNext}
             disabled={nextDisabled}
-            className="flex h-16 min-w-40 items-center justify-center gap-2 rounded-2xl bg-stb-hornbill px-8 text-lg font-bold text-white shadow-lg shadow-stb-hornbill/25 transition active:scale-[0.97] disabled:cursor-not-allowed disabled:bg-bark/20 disabled:text-bark/40 disabled:shadow-none"
+            className="flex h-16 min-w-40 items-center justify-center gap-2 rounded-full bg-gold px-8 text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97] disabled:cursor-not-allowed disabled:bg-ink/20 disabled:text-muted disabled:shadow-none"
           >
             {nextLabel}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>

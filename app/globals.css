@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Sarawak Tourism Board — "Gateway to Borneo"
-   Palette sampled directly from the masthead lockup.
+   Sarawak Tourism Board — photobooth kiosk
+
+   White ground, black type, and a single accent: the gold sampled from
+   the "A" of the Gateway to Borneo masthead.
+
+   GOLD IS A FILL, NEVER TEXT. Measured against white it is 2.34:1,
+   far below readable; as a button fill under black type it is 8.99:1.
+   So: gold buttons carry black labels, and nothing is ever typeset gold.
    ------------------------------------------------------------------ */
 @theme {
-  --color-stb-red: #e4272c;
-  --color-stb-amber: #f2a030;
-  --color-stb-blue: #1276bc;
-  --color-stb-lime: #8cc63f;
-  --color-stb-hornbill: #ea6a25;
-  --color-stb-steel: #4b8fc9;
-  --color-stb-green: #009e4f;
+  --color-gold: #ef9521;
+  --color-gold-deep: #d9820f;
 
-  --color-cream: #fdfaf4;
-  --color-sand: #f4ece0;
-  --color-bark: #2a211a;
-  --color-ink: #1a1512;
-  --color-muted: #7c6f63;
+  --color-ink: #111111;
+  --color-muted: #6b6b6b;
+  --color-line: #e5e4e0;
+  --color-surface: #f6f5f2;
 
-  --font-display: var(--font-cinzel), Georgia, "Times New Roman", serif;
+  /* One family throughout. Headings are the same sans at heavy weight and
+     tight tracking — cleaner than mixing in a display serif. */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -29,14 +31,11 @@
    Kiosk scale.
 
    The target is a 1080x1920 floor-standing panel viewed from about a
-   metre, so everything has to be physically larger than a tablet layout.
-   Rather than retune each screen, the root font size is driven by the
-   width of the 9:16 stage — and because Tailwind's spacing and type
-   scales are rem-based, the entire UI scales with it.
+   metre. The root font size is driven by the width of the 9:16 stage,
+   and because Tailwind's spacing and type scales are rem-based, the
+   entire UI scales with it.
 
    --kiosk-divisor is the single knob: smaller = bigger UI.
-   At 1080 wide this lands a ~25px root, so text-4xl is ~56px and an
-   h-16 button is ~100px tall.
    ------------------------------------------------------------------ */
 :root {
   --kiosk-divisor: 43;
@@ -45,25 +44,12 @@
 
 /*
  * Scoped to the kiosk page only — the stage carries .kiosk-stage.
- *
- * The download page (/p) is viewed on a phone and must keep a normal 16px
- * base, so it deliberately does not match. Scaling the root globally forced a
- * readability floor that broke the kiosk's proportions on short viewports:
- * a letterboxed 506x900 preview rendered at 15px when proportion wanted
- * ~11.8px, so the design overflowed and clipped. Scoping lets the kiosk scale
- * purely proportionally with a floor low enough never to bind in practice.
- *
- * Falls back to 16px where :has() is unsupported — smaller than intended, but
- * never broken.
+ * The download page (/p) is viewed on a phone and keeps a normal 16px base.
  */
 html:has(.kiosk-stage) {
   font-size: clamp(10px, calc(var(--stage-w) / var(--kiosk-divisor)), 34px);
 }
 
-/* ------------------------------------------------------------------
-   Kiosk base — full-screen, portrait.
-   No text selection, no bounce, no pinch zoom, no tap highlight.
-   ------------------------------------------------------------------ */
 html,
 body {
   height: 100%;
@@ -71,7 +57,7 @@ body {
 }
 
 body {
-  background: var(--color-cream);
+  background: #ffffff;
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -90,34 +76,9 @@ button,
 }
 
 /* Keeps interactive rows out of the unreachable bottom band of a tall
-   floor-standing panel. Collapses to a normal safe-area inset on short
-   screens, where the bottom edge is perfectly reachable. */
+   floor-standing panel. */
 .kiosk-reach-bottom {
-  padding-bottom: max(
-    env(safe-area-inset-bottom),
-    calc(100dvh * 0.07)
-  );
-}
-
-/* The signature multicolour ribbon lifted from the logo's letterforms. */
-.stb-ribbon {
-  background: linear-gradient(
-    90deg,
-    var(--color-stb-red) 0%,
-    var(--color-stb-red) 14%,
-    var(--color-stb-amber) 14%,
-    var(--color-stb-amber) 28%,
-    var(--color-stb-blue) 28%,
-    var(--color-stb-blue) 42%,
-    var(--color-stb-lime) 42%,
-    var(--color-stb-lime) 57%,
-    var(--color-stb-hornbill) 57%,
-    var(--color-stb-hornbill) 71%,
-    var(--color-stb-steel) 71%,
-    var(--color-stb-steel) 85%,
-    var(--color-stb-green) 85%,
-    var(--color-stb-green) 100%
-  );
+  padding-bottom: max(env(safe-area-inset-bottom), calc(100dvh * 0.07));
 }
 
 /* ------------------------------------------------------------------
@@ -126,7 +87,7 @@ button,
 @keyframes stb-fade-up {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -143,16 +104,23 @@ button,
   }
 }
 
-/* Hotspot pulse — the "tap me" affordance on the costume. */
+/* Hotspot pulse — the "tap me" affordance on the costume. Gold, so it
+   reads against the warm tones of the reference photography. */
 @keyframes stb-hotspot-pulse {
   0% {
-    box-shadow: 0 0 0 0 rgb(255 255 255 / 0.55), 0 0 0 0 rgb(234 106 37 / 0.45);
+    box-shadow:
+      0 0 0 0 rgb(255 255 255 / 0.6),
+      0 0 0 0 rgb(239 149 33 / 0.5);
   }
   70% {
-    box-shadow: 0 0 0 18px rgb(255 255 255 / 0), 0 0 0 26px rgb(234 106 37 / 0);
+    box-shadow:
+      0 0 0 18px rgb(255 255 255 / 0),
+      0 0 0 26px rgb(239 149 33 / 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgb(255 255 255 / 0), 0 0 0 0 rgb(234 106 37 / 0);
+    box-shadow:
+      0 0 0 0 rgb(255 255 255 / 0),
+      0 0 0 0 rgb(239 149 33 / 0);
   }
 }
 
@@ -162,15 +130,6 @@ button,
   }
   to {
     transform: translateX(100%);
-  }
-}
-
-@keyframes stb-ken-burns {
-  from {
-    transform: scale(1) translate3d(0, 0, 0);
-  }
-  to {
-    transform: scale(1.12) translate3d(0, -1.5%, 0);
   }
 }
 
@@ -186,16 +145,12 @@ button,
 .animate-shimmer {
   animation: stb-shimmer 1.8s linear infinite;
 }
-.animate-ken-burns {
-  animation: stb-ken-burns 9s ease-out both;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-fade,
   .animate-hotspot,
-  .animate-shimmer,
-  .animate-ken-burns {
+  .animate-shimmer {
     animation: none !important;
   }
 }

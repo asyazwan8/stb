@@ -36,7 +36,7 @@ export function Hotspot({
           {live ? (
             <span
               className={`h-3.5 w-3.5 rounded-full transition ${
-                active ? "bg-stb-hornbill" : "bg-white"
+                active ? "bg-gold" : "bg-white"
               }`}
             />
           ) : (

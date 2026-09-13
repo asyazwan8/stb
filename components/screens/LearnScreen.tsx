@@ -35,20 +35,20 @@ export function LearnScreen({
   };
 
   return (
-    <div className="relative flex h-full flex-col bg-cream">
+    <div className="relative flex h-full flex-col bg-white">
       <Masthead compact step={{ current: 2, total: 4, label: "Meet the dress" }} />
 
       <main className="flex min-h-0 flex-1 flex-col px-6 pb-4">
         <div className="mx-auto flex min-h-0 w-full max-w-2xl flex-1 flex-col">
           <div className="shrink-0">
             <div className="animate-fade-up flex items-baseline justify-between gap-3">
-              <h1 className="font-display text-4xl font-bold text-ink">
+              <h1 className="font-display tracking-tight text-4xl font-extrabold text-ink">
                 {ethnic.name}
               </h1>
               <p className="text-sm font-semibold italic text-muted">{look.name}</p>
             </div>
 
-            <p className="animate-fade-up mt-2 text-base leading-relaxed text-bark">
+            <p className="animate-fade-up mt-2 text-base leading-relaxed text-muted">
               {ethnic.description}
             </p>
           </div>
@@ -59,7 +59,7 @@ export function LearnScreen({
           <div className="flex min-h-0 flex-1 justify-center py-4">
             <div
               onClick={handleProbe}
-              className="animate-fade relative h-full max-w-full overflow-hidden rounded-3xl bg-bark shadow-xl"
+              className="animate-fade relative h-full max-w-full overflow-hidden rounded-3xl bg-ink shadow-xl"
               style={{ aspectRatio: `${look.aspect.w} / ${look.aspect.h}` }}
             >
               <img
@@ -78,18 +78,18 @@ export function LearnScreen({
               ))}
 
               {calibrate && probe ? (
-                <span className="absolute left-3 top-3 rounded-lg bg-ink/85 px-2.5 py-1.5 font-mono text-xs text-cream">
+                <span className="absolute left-3 top-3 rounded-lg bg-ink/85 px-2.5 py-1.5 font-mono text-xs text-white">
                   x: {probe.x}, y: {probe.y}
                 </span>
               ) : null}
             </div>
           </div>
 
-          <div className="flex shrink-0 items-center justify-center gap-2.5 rounded-2xl bg-sand/70 px-4 py-3">
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-stb-hornbill/60 bg-white/70">
-              <span className="h-2 w-2 rounded-full bg-stb-hornbill" />
+          <div className="flex shrink-0 items-center justify-center gap-2.5 rounded-2xl bg-surface px-4 py-3">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-gold/60 bg-white/70">
+              <span className="h-2 w-2 rounded-full bg-gold" />
             </span>
-            <p className="text-[0.9375rem] font-medium leading-snug text-bark">
+            <p className="text-[0.9375rem] font-medium leading-snug text-muted">
               Tap a circle on the photo to learn what it means.
             </p>
           </div>

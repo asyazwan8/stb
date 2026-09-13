@@ -3,10 +3,10 @@
  * on the processing screen while the portrait renders, so the wait becomes a
  * moment of destination marketing rather than dead time.
  *
- * PHOTOGRAPHY: these are LANDSCAPE images, shown as an editorial band at their
- * natural aspect so nothing is cropped away on the portrait panel. Drop real
- * photos into /public/places using these exact filenames — no code change.
- * Landscape, roughly 16:9, 1600x900 or larger.
+ * PHOTOGRAPHY: shown in a gallery mat on the loading screen, centred at their
+ * own aspect ratio and never cropped. Any shape works — the supplied set runs
+ * from 3:2 landscape to square. Drop real photos into /public/places and point
+ * `image` at them; the filename does not have to match `id`.
  *
  * NOTE FOR STB: copy below should be reviewed before the demo.
  */
@@ -23,8 +23,13 @@ export type Place = {
   to: string;
 };
 
-/** All four destination photos are landscape; the band reserves this shape. */
-export const PLACE_ASPECT = { w: 16, h: 9 };
+/**
+ * The frame's outer window. Photos are centred inside it at their OWN aspect
+ * ratio and never cropped — supplied art ranges from 3:2 landscape to square,
+ * so the differing amount of surrounding mat is the point, exactly as with a
+ * real matted print.
+ */
+export const FRAME_WINDOW = { w: 4, h: 3 };
 
 export const PLACES: Place[] = [
   {
@@ -32,7 +37,7 @@ export const PLACES: Place[] = [
     name: "Borneo Cultures Museum",
     region: "Kuching",
     hook: "Five floors of Borneo's living heritage, in the heart of the old town.",
-    image: "/places/borneo-cultures-museum.jpg",
+    image: "/places/borneo-cultural-museum.jpeg",
     from: "#5c2412",
     to: "#c8641f",
   },

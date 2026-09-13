@@ -40,10 +40,15 @@ them into `public/places/` with these exact filenames:
 | `bako-national-park.jpg` | Bako National Park |
 | `semenggoh-wildlife-centre.jpg` | Semenggoh Wildlife Centre |
 
-Landscape, roughly 16:9, 1600×900 or larger. They are shown as an editorial
-band at their natural aspect — **never cropped to the portrait panel** — so the
-whole frame is always visible. The place list in `lib/places.ts` is the single
-source of truth; the placeholder generator reads it directly.
+**Any shape works.** They appear on the loading screen as a carousel of matted,
+framed prints — each photo centred inside a fixed frame at its own aspect ratio
+and **never cropped**, so the differing amount of surrounding mat is the point,
+exactly as with real matted prints. The supplied set runs from 3:2 landscape to
+square.
+
+`lib/places.ts` is the single source of truth, and the filename does not have to
+match the `id` — point `image` at whatever you upload. The placeholder generator
+reads that file directly and keys off the image path.
 
 ### After replacing a reference photo
 
@@ -97,6 +102,26 @@ ever creates files that are **absent**, so real assets are never overwritten —
 which is what lets a fresh clone build without any binaries present.
 
 The camera needs HTTPS or `localhost`. On a tablet, use the deployed URL.
+
+## Design system
+
+White ground, black type, and one accent: the gold sampled from the "A" of the
+masthead, **`#EF9521`**.
+
+**Gold is a fill, never text.** Measured against white it is 2.34:1 — far below
+readable. As a button fill under black type it is 8.99:1. So buttons are gold
+with black labels, and nothing is ever typeset in gold.
+
+Type is a single family (Plus Jakarta Sans): headings are the same sans at
+extra-bold with tight tracking, rather than a contrasting display serif.
+
+Sarawak motifs live in `components/Motif.tsx` as fine-line SVG drawn from Iban
+*bunga terung* spirals and *pua kumbu* geometry — corner marks on the photo
+frame, a rule under headings, and one pale watermark behind the idle screen.
+
+**Wording:** the UI says "ethnic group", never "culture". The two exceptions are
+the proper nouns *Borneo Cultures Museum* and *Sarawak Cultural Village*, which
+are the real names of real institutions.
 
 ## Kiosk layout
 

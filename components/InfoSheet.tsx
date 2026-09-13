@@ -32,19 +32,19 @@ export function InfoSheet({
         className="absolute inset-0 bg-ink/45 animate-fade"
       />
 
-      <div className="animate-fade-up kiosk-reach-bottom relative w-full rounded-t-[2rem] bg-cream p-6 shadow-2xl">
-        <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-bark/15" aria-hidden />
+      <div className="animate-fade-up kiosk-reach-bottom relative w-full rounded-t-[2rem] bg-white p-6 shadow-2xl">
+        <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-ink/15" aria-hidden />
 
         <div className="mx-auto w-full max-w-xl">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-stb-hornbill">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-ink">
             {hotspot.label}
           </p>
-          <h3 className="mt-1.5 font-display text-3xl font-bold text-ink">
+          <h3 className="mt-1.5 font-display tracking-tight text-3xl font-extrabold text-ink">
             {hotspot.name}
           </h3>
 
           {live ? (
-            <p className="mt-3 text-[1.0625rem] leading-relaxed text-bark">
+            <p className="mt-3 text-[1.0625rem] leading-relaxed text-muted">
               {hotspot.description}
             </p>
           ) : (
@@ -57,7 +57,7 @@ export function InfoSheet({
           <button
             type="button"
             onClick={onClose}
-            className="mt-6 h-14 w-full rounded-2xl bg-ink text-lg font-bold text-cream transition active:scale-[0.98]"
+            className="mt-6 h-14 w-full rounded-full bg-ink text-lg font-bold text-white transition active:scale-[0.98]"
           >
             Got it
           </button>

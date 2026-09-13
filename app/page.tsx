@@ -138,14 +138,14 @@ function Photobooth() {
 /** Only reachable if state is torn mid-flow (a reload, say). */
 function Fallback({ onRestart }: { onRestart: () => void }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-5 bg-cream px-8 text-center">
-      <p className="font-display text-2xl font-bold text-ink">
+    <div className="flex h-full flex-col items-center justify-center gap-5 bg-white px-8 text-center">
+      <p className="font-display tracking-tight text-2xl font-bold text-ink">
         Let&rsquo;s start again
       </p>
       <button
         type="button"
         onClick={onRestart}
-        className="h-16 rounded-2xl bg-stb-hornbill px-10 text-lg font-bold text-white transition active:scale-95"
+        className="h-16 rounded-2xl bg-gold px-10 text-lg font-bold text-white transition active:scale-95"
       >
         Start over
       </button>
@@ -161,10 +161,10 @@ export default function Page() {
     // On a phone (taller than 9:16) the cap never binds and it fills the screen.
     <div className="flex h-dvh w-full items-center justify-center overflow-hidden bg-neutral-950">
       <div
-        className="kiosk-stage relative h-dvh w-full overflow-hidden bg-cream shadow-2xl"
+        className="kiosk-stage relative h-dvh w-full overflow-hidden bg-white shadow-2xl"
         style={{ maxWidth: "calc(100dvh * 9 / 16)" }}
       >
-        <Suspense fallback={<div className="h-full bg-cream" />}>
+        <Suspense fallback={<div className="h-full bg-white" />}>
           <Photobooth />
         </Suspense>
       </div>

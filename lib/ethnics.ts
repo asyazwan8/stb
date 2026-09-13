@@ -45,8 +45,6 @@ export type Ethnic = {
   /** Short intro shown on the learn screen. */
   description: string;
   status: "live" | "coming-soon";
-  /** Accent colour drawn from the STB masthead palette. */
-  accent: string;
   looks: Look[];
 };
 
@@ -60,13 +58,12 @@ export const ETHNICS: Ethnic[] = [
     tagline: "Longhouse people of the great rivers",
     description: IBAN_DESCRIPTION,
     status: "live",
-    accent: "var(--color-stb-red)",
     looks: [
       {
         gender: "female",
         name: "Ngepan Indu",
         label: "Female",
-        image: "/references/iban-female.png",
+        image: "/references/iban-female.jpeg",
         aspect: { w: 843, h: 1264 },
         falAspectRatio: "2:3",
         hotspots: [
@@ -113,7 +110,7 @@ export const ETHNICS: Ethnic[] = [
         gender: "male",
         name: "Ngepan Lelaki",
         label: "Male",
-        image: "/references/iban-male.png",
+        image: "/references/iban-male.jpeg",
         aspect: { w: 768, h: 1376 },
         falAspectRatio: "3:4",
         hotspots: [
@@ -164,7 +161,6 @@ export const ETHNICS: Ethnic[] = [
     tagline: "Hill people of the Sarawak highlands",
     description: "",
     status: "coming-soon",
-    accent: "var(--color-stb-lime)",
     looks: [],
   },
   {
@@ -173,7 +169,6 @@ export const ETHNICS: Ethnic[] = [
     tagline: "Artists of the upriver interior",
     description: "",
     status: "coming-soon",
-    accent: "var(--color-stb-blue)",
     looks: [],
   },
   {
@@ -182,7 +177,6 @@ export const ETHNICS: Ethnic[] = [
     tagline: "Coastal builders of the tall houses",
     description: "",
     status: "coming-soon",
-    accent: "var(--color-stb-amber)",
     looks: [],
   },
 ];

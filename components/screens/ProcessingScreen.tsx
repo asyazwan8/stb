@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Masthead, Ribbon } from "@/components/Masthead";
-import { PlaceBand } from "@/components/PlaceBand";
+import { Masthead } from "@/components/Masthead";
+import { PhotoFrame } from "@/components/PhotoFrame";
+import { MotifDivider } from "@/components/Motif";
 import { PLACES } from "@/lib/places";
 import type { SwapState } from "@/lib/useFaceSwap";
 
@@ -13,7 +14,7 @@ const STATUS_COPY = [
   "Setting the feathers straight…",
 ];
 
-const PLACE_MS = 6500;
+const PLACE_MS = 5500;
 const STATUS_MS = 3200;
 
 export function ProcessingScreen({
@@ -25,12 +26,12 @@ export function ProcessingScreen({
   onCancel: () => void;
   onRetry: () => void;
 }) {
-  const [placeIndex, setPlaceIndex] = useState(0);
+  const [index, setIndex] = useState(0);
   const [statusIndex, setStatusIndex] = useState(0);
 
   useEffect(() => {
     const id = window.setInterval(
-      () => setPlaceIndex((i) => (i + 1) % PLACES.length),
+      () => setIndex((i) => (i + 1) % PLACES.length),
       PLACE_MS,
     );
     return () => window.clearInterval(id);
@@ -44,31 +45,31 @@ export function ProcessingScreen({
     return () => window.clearInterval(id);
   }, []);
 
-  const place = PLACES[placeIndex];
+  const place = PLACES[index];
 
   if (state.phase === "error") {
     return (
-      <div className="flex h-full flex-col bg-cream">
-        <Ribbon />
+      <div className="flex h-full flex-col bg-white">
+        <Masthead compact />
         <main className="kiosk-reach-bottom flex flex-1 flex-col items-center justify-center px-8 text-center">
-          <h1 className="font-display text-4xl font-bold text-ink">
+          <h1 className="font-display tracking-tight text-4xl font-extrabold text-ink">
             That didn&rsquo;t work
           </h1>
-          <p className="mt-3 max-w-md text-[1.0625rem] leading-relaxed text-bark">
+          <p className="mt-3 max-w-md text-[1.0625rem] leading-relaxed text-muted">
             {state.error}
           </p>
           <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
             <button
               type="button"
               onClick={onRetry}
-              className="h-16 rounded-2xl bg-stb-hornbill text-lg font-bold text-white shadow-lg shadow-stb-hornbill/25 transition active:scale-[0.97]"
+              className="h-16 rounded-full bg-gold text-lg font-bold text-ink transition active:scale-[0.97] active:bg-gold-deep"
             >
               Try again
             </button>
             <button
               type="button"
               onClick={onCancel}
-              className="h-16 rounded-2xl border-2 border-bark/15 text-lg font-semibold text-bark transition active:scale-[0.97]"
+              className="h-16 rounded-full border border-ink/20 text-lg font-semibold text-ink transition active:scale-[0.97] active:bg-surface"
             >
               Start over
             </button>
@@ -79,33 +80,66 @@ export function ProcessingScreen({
   }
 
   return (
-    <div className="flex h-full flex-col bg-cream">
+    <div className="flex h-full flex-col bg-white">
       <Masthead compact />
 
-      <main className="kiosk-reach-bottom flex min-h-0 flex-1 flex-col px-6">
-        <div className="flex-[0.45]" />
+      <main className="kiosk-reach-bottom flex min-h-0 flex-1 flex-col px-8">
+        <div className="flex-[0.85]" />
 
-        {/* Destination promotion — the wait is the pitch. Landscape photography
-            sits at its own aspect rather than being cropped to the panel. */}
+        {/* Carousel of framed prints. Every photo is rendered and cross-faded,
+            so the images are loaded up front and transitions never flash. */}
         <div className="shrink-0">
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-stb-hornbill">
+          <p className="text-center text-xs font-bold uppercase tracking-[0.24em] text-muted">
             While you wait — visit
           </p>
 
-          <PlaceBand activeIndex={placeIndex} className="mt-3 shadow-xl" />
+          <div
+            className="relative mt-5"
+            style={{ aspectRatio: "4 / 3" }}
+            aria-live="polite"
+          >
+            {PLACES.map((p, i) => (
+              <div
+                key={p.id}
+                aria-hidden={i !== index}
+                className="absolute inset-0 transition-opacity duration-700 ease-out"
+                style={{ opacity: i === index ? 1 : 0 }}
+              >
+                <PhotoFrame src={p.image} className="h-full w-full" />
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel position. */}
+          <div className="mt-5 flex items-center justify-center gap-2">
+            {PLACES.map((p, i) => (
+              <span
+                key={p.id}
+                className={`h-1.5 rounded-full transition-all duration-500 ${
+                  i === index ? "w-7 bg-gold" : "w-1.5 bg-ink/20"
+                }`}
+              />
+            ))}
+            <span className="sr-only">
+              {index + 1} of {PLACES.length}
+            </span>
+          </div>
 
           <h2
             key={place.id}
-            className="animate-fade-up mt-5 font-display text-4xl font-bold leading-tight text-ink"
+            className="animate-fade-up mt-5 text-center font-display tracking-tight text-4xl font-extrabold leading-tight text-ink"
           >
             {place.name}
           </h2>
-          <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-muted">
+          <p className="mt-1.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-muted">
             {place.region}
           </p>
+
+          <MotifDivider className="mx-auto mt-4 h-3.5 w-44 text-ink/25" />
+
           <p
             key={`${place.id}-hook`}
-            className="animate-fade mt-3 max-w-md text-[1.0625rem] leading-relaxed text-bark"
+            className="animate-fade mx-auto mt-4 max-w-md text-center text-[1.0625rem] leading-relaxed text-muted"
           >
             {place.hook}
           </p>
@@ -113,23 +147,23 @@ export function ProcessingScreen({
 
         <div className="flex-1" />
 
-        <div className="shrink-0 rounded-3xl bg-ink p-6 shadow-xl">
+        <div className="shrink-0 border-t border-line pt-5">
           <div className="flex items-center justify-between gap-4">
             <p
               key={statusIndex}
-              className="animate-fade text-lg font-semibold text-cream"
+              className="animate-fade text-lg font-semibold text-ink"
               role="status"
             >
               {STATUS_COPY[statusIndex]}
             </p>
-            <span className="font-display text-lg font-bold tabular-nums text-cream/80">
+            <span className="font-display tracking-tight text-lg font-bold tabular-nums text-muted">
               {Math.round(state.progress)}%
             </span>
           </div>
 
-          <div className="relative mt-4 h-2.5 w-full overflow-hidden rounded-full bg-white/20">
+          <div className="relative mt-3.5 h-1.5 w-full overflow-hidden rounded-full bg-surface">
             <div
-              className="h-full rounded-full bg-stb-amber transition-[width] duration-300 ease-out"
+              className="h-full rounded-full bg-gold transition-[width] duration-300 ease-out"
               style={{ width: `${state.progress}%` }}
             />
             <div
@@ -137,19 +171,19 @@ export function ProcessingScreen({
               className="animate-shimmer absolute inset-y-0 w-1/3"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)",
+                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)",
               }}
             />
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-4">
-            <p className="text-xs text-cream/60">
+          <div className="mt-3.5 flex items-center justify-between gap-4">
+            <p className="text-xs text-muted">
               Creating your portrait — this takes under a minute.
             </p>
             <button
               type="button"
               onClick={onCancel}
-              className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-cream/60 underline underline-offset-4"
+              className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-muted underline underline-offset-4"
             >
               Cancel
             </button>

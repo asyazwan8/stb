@@ -1,9 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 
-export function Ribbon({ className = "" }: { className?: string }) {
-  return <div className={`stb-ribbon h-1.5 w-full ${className}`} aria-hidden />;
-}
-
 export function Masthead({
   compact = false,
   step,
@@ -13,7 +9,6 @@ export function Masthead({
 }) {
   return (
     <header className="kiosk-no-select w-full shrink-0">
-      <Ribbon />
       <div
         className={`flex items-center justify-between gap-4 px-6 ${
           compact ? "py-3" : "py-5"
@@ -35,10 +30,10 @@ export function Masthead({
                   key={i}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     i === step.current
-                      ? "w-6 bg-stb-hornbill"
+                      ? "w-6 bg-gold"
                       : i < step.current
-                        ? "w-2 bg-stb-hornbill/40"
-                        : "w-2 bg-bark/15"
+                        ? "w-2 bg-gold/40"
+                        : "w-2 bg-ink/15"
                   }`}
                 />
               ))}

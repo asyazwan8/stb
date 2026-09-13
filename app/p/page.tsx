@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { Ribbon } from "@/components/Masthead";
 
 /** Same allowlist as the proxy — a bad or hostile src never renders. */
 function isAllowed(src: string): boolean {
@@ -24,9 +23,7 @@ export default async function DownloadPage({
   const valid = src && isAllowed(src);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-cream">
-      <Ribbon />
-
+    <div className="flex min-h-dvh flex-col bg-white">
       <header className="flex justify-center px-6 py-5">
         <img
           src="/brand/stb-masthead.png"
@@ -39,10 +36,10 @@ export default async function DownloadPage({
         <div className="mx-auto w-full max-w-md">
           {valid ? (
             <>
-              <h1 className="text-center font-display text-3xl font-bold text-ink">
+              <h1 className="text-center font-display tracking-tight text-3xl font-extrabold text-ink">
                 Your Sarawak portrait
               </h1>
-              <p className="mt-2 text-center text-[0.9375rem] leading-relaxed text-bark">
+              <p className="mt-2 text-center text-[0.9375rem] leading-relaxed text-muted">
                 Tap and hold the image to save it, or use the button below.
               </p>
 
@@ -56,8 +53,8 @@ export default async function DownloadPage({
 
               <a
                 href={`/api/image?src=${encodeURIComponent(src)}&download=1`}
-                download="sarawak-photobooth.jpg"
-                className="mt-5 flex h-16 w-full items-center justify-center gap-2 rounded-2xl bg-stb-hornbill text-lg font-bold text-white shadow-lg shadow-stb-hornbill/25 transition active:scale-[0.97]"
+                download="sarawak-portrait.jpg"
+                className="mt-5 flex h-16 w-full items-center justify-center gap-2 rounded-2xl bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path
@@ -71,11 +68,11 @@ export default async function DownloadPage({
                 Download photo
               </a>
 
-              <div className="mt-8 rounded-3xl bg-sand/70 px-5 py-5 text-center">
-                <p className="font-display text-xl font-bold text-ink">
+              <div className="mt-8 rounded-3xl bg-surface px-5 py-5 text-center">
+                <p className="font-display tracking-tight text-xl font-bold text-ink">
                   More to discover
                 </p>
-                <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-bark">
+                <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-muted">
                   Longhouses on the Rejang, caves at Mulu, rainforest at Bako —
                   Sarawak is the gateway to Borneo.
                 </p>
@@ -83,18 +80,18 @@ export default async function DownloadPage({
             </>
           ) : (
             <div className="pt-16 text-center">
-              <h1 className="font-display text-3xl font-bold text-ink">
+              <h1 className="font-display tracking-tight text-3xl font-extrabold text-ink">
                 Nothing to show
               </h1>
-              <p className="mt-3 text-[0.9375rem] leading-relaxed text-bark">
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
                 This link is missing a portrait, or it has expired. Scan the QR
-                code on the photobooth screen again.
+                code on the kiosk screen again.
               </p>
               <Link
                 href="/"
-                className="mt-7 inline-flex h-14 items-center justify-center rounded-2xl border-2 border-bark/15 px-8 text-base font-semibold text-bark"
+                className="mt-7 inline-flex h-14 items-center justify-center rounded-2xl border-2 border-ink/20 px-8 text-base font-semibold text-muted"
               >
-                Back to the photobooth
+                Back to the kiosk
               </Link>
             </div>
           )}

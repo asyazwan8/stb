@@ -36,16 +36,16 @@ export function ResultScreen({
   const display = `/api/image?src=${encodeURIComponent(imageUrl)}`;
 
   return (
-    <div className="flex h-full flex-col bg-cream">
+    <div className="flex h-full flex-col bg-white">
       <Masthead compact />
 
       <main className="kiosk-reach-bottom flex min-h-0 flex-1 flex-col px-6">
         <div className="mx-auto flex min-h-0 w-full max-w-2xl flex-1 flex-col">
           <div className="animate-fade-up shrink-0 text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-stb-hornbill">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-ink">
               Your portrait
             </p>
-            <h1 className="mt-1 font-display text-3xl font-bold text-ink">
+            <h1 className="mt-1 font-display tracking-tight text-3xl font-extrabold text-ink">
               {look.name}
             </h1>
             <p className="mt-0.5 text-sm text-muted">
@@ -56,7 +56,7 @@ export function ResultScreen({
           {/* Height-driven so the QR and the restart button are always reachable. */}
           <div className="flex min-h-0 flex-1 justify-center py-3">
             <div
-              className="animate-fade relative h-full max-w-full overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-bark/10"
+              className="animate-fade relative h-full max-w-full overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-line"
               style={{ aspectRatio: `${look.aspect.w} / ${look.aspect.h}` }}
             >
               <img
@@ -72,9 +72,7 @@ export function ResultScreen({
                   alt="Sarawak — Gateway to Borneo"
                   className="h-7 w-auto brightness-0 invert"
                 />
-                <p className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-white/85">
-                  AI Photobooth
-                </p>
+
               </div>
             </div>
           </div>
@@ -85,8 +83,8 @@ export function ResultScreen({
             </div>
 
             <div className="flex flex-1 flex-col justify-between gap-3">
-              <div className="rounded-3xl bg-sand/70 px-5 py-3.5">
-                <p className="text-[0.9375rem] leading-relaxed text-bark">
+              <div className="rounded-3xl bg-surface px-5 py-3.5">
+                <p className="text-[0.9375rem] leading-relaxed text-muted">
                   Scan the code to save your portrait, then come and see the real
                   thing — the {ethnic.name} welcome visitors to their longhouses
                   along Sarawak&rsquo;s rivers.
@@ -96,7 +94,7 @@ export function ResultScreen({
               <button
                 type="button"
                 onClick={onRestart}
-                className="h-16 w-full rounded-2xl bg-stb-hornbill text-lg font-bold text-white shadow-lg shadow-stb-hornbill/25 transition active:scale-[0.97]"
+                className="h-16 w-full rounded-full bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
               >
                 Start over
               </button>
