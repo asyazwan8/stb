@@ -21,8 +21,12 @@ push; Vercel redeploys automatically.
 | --- | --- |
 | `public/brand/stb-masthead.png` | The official "SARAWAK — Gateway to Borneo" lockup (transparent PNG, roughly 3:1) |
 | `app/icon.png` | Optional — the browser-tab mark (square PNG) |
-| `public/references/iban-female.jpg` | The Iban *Ngepan Indu* reference portrait (portrait orientation) |
-| `public/references/iban-male.jpg` | The Iban *Ngepan Lelaki* reference portrait (portrait orientation) |
+| `public/references/iban-female.*` | The Iban *Ngepan Indu* reference portrait (portrait orientation) |
+| `public/references/iban-male.*` | The Iban *Ngepan Lelaki* reference portrait (portrait orientation) |
+
+`.jpg`, `.png` and `.webp` all work for the references — update the `image` path
+in `lib/ethnics.ts` to match the extension you upload, and set `aspect` to the
+file's real pixel dimensions so the hotspot overlay stays aligned.
 
 ### Destination photography
 

@@ -59,6 +59,18 @@ async function missing(relative, base = OUT) {
   }
 }
 
+/**
+ * A reference counts as present under any common extension. STB supplied PNGs
+ * where the stand-ins were JPEGs; without this the build would happily write a
+ * placeholder .jpg alongside the real .png and the app would show the wrong one.
+ */
+async function missingReference(base) {
+  for (const ext of [".jpg", ".jpeg", ".png", ".webp"]) {
+    if (!(await missing(`references/${base}${ext}`))) return false;
+  }
+  return true;
+}
+
 const LETTERS = [
   ["S", "#e4272c"],
   ["A", "#f2a030"],
@@ -196,7 +208,7 @@ async function main() {
     .png({ palette: true, colors: 16, compressionLevel: 9, effort: 10 })
     .toFile(new URL("brand/stb-masthead.png", OUT).pathname);
 
-  if (await missing("references/iban-female.jpg"))
+  if (await missingReference("iban-female"))
     await sharp(
     svg(
       referenceSvg({
@@ -213,7 +225,7 @@ async function main() {
     .jpeg({ quality: 72, mozjpeg: true })
     .toFile(new URL("references/iban-female.jpg", OUT).pathname);
 
-  if (await missing("references/iban-male.jpg"))
+  if (await missingReference("iban-male"))
     await sharp(
     svg(
       referenceSvg({

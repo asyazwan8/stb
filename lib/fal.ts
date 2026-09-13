@@ -55,7 +55,11 @@ export async function loadReferenceDataUri(look: Look): Promise<string> {
     throw new Error(`Reference image path escapes public/: ${look.image}`);
   }
   const bytes = await readFile(abs);
-  return `data:image/jpeg;base64,${bytes.toString("base64")}`;
+  // Derive the type from the file — STB supplied PNGs, and mislabelling them
+  // as JPEG would hand fal a corrupt data URI.
+  const ext = path.extname(abs).toLowerCase();
+  const mime = ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : "image/jpeg";
+  return `data:${mime};base64,${bytes.toString("base64")}`;
 }
 
 /**

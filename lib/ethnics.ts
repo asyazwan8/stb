@@ -66,8 +66,8 @@ export const ETHNICS: Ethnic[] = [
         gender: "female",
         name: "Ngepan Indu",
         label: "Female",
-        image: "/references/iban-female.jpg",
-        aspect: { w: 843, h: 1265 },
+        image: "/references/iban-female.png",
+        aspect: { w: 843, h: 1264 },
         falAspectRatio: "2:3",
         hotspots: [
           {
@@ -76,8 +76,8 @@ export const ETHNICS: Ethnic[] = [
             name: "Sugu Tinggi",
             description:
               "The “tall comb” — a crown of hammered silver worn with the full ngepan indu. Its height and the number of silver leaves traditionally signalled a family's standing, and most are heirlooms handed down through generations.",
-            x: 48,
-            y: 25,
+            x: 47,
+            y: 23,
             status: "live",
           },
           {
@@ -85,8 +85,8 @@ export const ETHNICS: Ethnic[] = [
             label: "Collar",
             name: "Marik Empang",
             description: "",
-            x: 50,
-            y: 41,
+            x: 49,
+            y: 44,
             status: "coming-soon",
           },
           {
@@ -94,8 +94,8 @@ export const ETHNICS: Ethnic[] = [
             label: "Corset",
             name: "Rawai & Lampit",
             description: "",
-            x: 52,
-            y: 58,
+            x: 55,
+            y: 60,
             status: "coming-soon",
           },
           {
@@ -103,8 +103,8 @@ export const ETHNICS: Ethnic[] = [
             label: "Skirt",
             name: "Kain Kebat",
             description: "",
-            x: 47,
-            y: 73,
+            x: 48,
+            y: 75,
             status: "coming-soon",
           },
         ],
@@ -113,8 +113,8 @@ export const ETHNICS: Ethnic[] = [
         gender: "male",
         name: "Ngepan Lelaki",
         label: "Male",
-        image: "/references/iban-male.jpg",
-        aspect: { w: 768, h: 1280 },
+        image: "/references/iban-male.png",
+        aspect: { w: 768, h: 1376 },
         falAspectRatio: "3:4",
         hotspots: [
           {
@@ -124,7 +124,7 @@ export const ETHNICS: Ethnic[] = [
             description:
               "A woven rattan cap crowned with the barred feathers of the argus pheasant and the hornbill — the bird the Iban hold sacred. Worn with the ngepan lelaki, it once marked a man's standing in the longhouse.",
             x: 43,
-            y: 19,
+            y: 20,
             status: "live",
           },
           {
@@ -132,8 +132,8 @@ export const ETHNICS: Ethnic[] = [
             label: "Vest",
             name: "Baju Burung",
             description: "",
-            x: 47,
-            y: 46,
+            x: 50,
+            y: 47,
             status: "coming-soon",
           },
           {
@@ -141,7 +141,7 @@ export const ETHNICS: Ethnic[] = [
             label: "Blade",
             name: "Ilang",
             description: "",
-            x: 30,
+            x: 32,
             y: 56,
             status: "coming-soon",
           },
@@ -151,7 +151,7 @@ export const ETHNICS: Ethnic[] = [
             name: "Sirat",
             description: "",
             x: 50,
-            y: 68,
+            y: 65,
             status: "coming-soon",
           },
         ],
