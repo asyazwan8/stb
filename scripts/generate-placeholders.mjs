@@ -12,6 +12,7 @@ import { access, mkdir, writeFile } from "node:fs/promises";
 import { PLACES } from "./places.data.mjs";
 
 const OUT = new URL("../public/", import.meta.url);
+const APP = new URL("../app/", import.meta.url);
 
 /**
  * Never overwrite a real asset. Once STB's actual photography is dropped in,
@@ -19,9 +20,9 @@ const OUT = new URL("../public/", import.meta.url);
  * "prebuild" script) so that a fresh clone or a file-upload deploy still has
  * artwork to render.
  */
-async function missing(relative) {
+async function missing(relative, base = OUT) {
   try {
-    await access(new URL(relative, OUT));
+    await access(new URL(relative, base));
     return false;
   } catch {
     return true;
@@ -37,6 +38,14 @@ const LETTERS = [
   ["A", "#4b8fc9"],
   ["K", "#009e4f"],
 ];
+
+/** Browser-tab mark. Kept simple so it still reads at 32px. */
+function iconSvg() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#ea6a25"/>
+  <text x="256" y="368" fill="#ffffff" font-family="DejaVu Serif" font-size="340" font-weight="bold" text-anchor="middle">S</text>
+</svg>`;
+}
 
 /** Typographic stand-in for the "Gateway to Borneo" masthead lockup. */
 function mastheadSvg() {
@@ -142,6 +151,11 @@ async function main() {
   await mkdir(new URL("brand/", OUT), { recursive: true });
   await mkdir(new URL("references/", OUT), { recursive: true });
   await mkdir(new URL("places/", OUT), { recursive: true });
+
+  if (await missing("icon.png", APP))
+    await sharp(svg(iconSvg()))
+      .png({ palette: true, colors: 8, compressionLevel: 9 })
+      .toFile(new URL("icon.png", APP).pathname);
 
   // Flat colour art — a small palette keeps the stand-in tiny.
   if (await missing("brand/stb-masthead.png"))

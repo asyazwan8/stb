@@ -18,6 +18,7 @@ push; Vercel redeploys automatically.
 | Path | What it should be |
 | --- | --- |
 | `public/brand/stb-masthead.png` | The official "SARAWAK — Gateway to Borneo" lockup (transparent PNG, roughly 3:1) |
+| `app/icon.png` | Optional — the browser-tab mark (square PNG) |
 | `public/references/iban-female.jpg` | The Iban *Ngepan Indu* reference portrait (portrait orientation) |
 | `public/references/iban-male.jpg` | The Iban *Ngepan Lelaki* reference portrait (portrait orientation) |
 
@@ -69,8 +70,12 @@ npm install
 npm run dev          # http://localhost:3000
 npm run build        # production build
 npm run typecheck
-node scripts/generate-placeholders.mjs   # regenerate placeholder artwork
+node scripts/generate-placeholders.mjs   # fill in any MISSING placeholder art
 ```
+
+The generator also runs automatically before every build (`prebuild`). It only
+ever creates files that are **absent**, so real assets are never overwritten —
+which is what lets a fresh clone build without any binaries present.
 
 The camera needs HTTPS or `localhost`. On a tablet, use the deployed URL.
 
