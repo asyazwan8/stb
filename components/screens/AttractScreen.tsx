@@ -8,23 +8,14 @@ export function AttractScreen({ onStart }: { onStart: () => void }) {
     <div className="relative flex h-full flex-col overflow-hidden bg-white">
       {/* Hornbills fill the quiet corners of a very tall panel. Big and in
           flight up top, smaller and perched down low. */}
-      {/* In flight across the top band, at rest along the bottom band. Sized
-          and offset to stay clear of the masthead and the footer copy — the
-          logo is the hero and nothing may cross it. */}
-      <div className="animate-float absolute -left-[8%] -top-[8%] w-[46%]">
-        <Hornbill pose={5} rotate={-5} className="w-full" />
+      {/* Two birds, not a flock. Both sit fully inside the frame and face
+          inward, so the eye is led to the masthead rather than off the edge.
+          Everything else was crowding the composition. */}
+      <div className="animate-float absolute right-[5%] top-[7%] w-[26%]">
+        <Hornbill pose={1} rotate={-4} className="w-full" />
       </div>
-      <div
-        className="animate-float absolute -right-[5%] top-[4%] w-[28%]"
-        style={{ animationDelay: "-2.6s" }}
-      >
-        <Hornbill pose={1} flip rotate={7} className="w-full" />
-      </div>
-      <div className="absolute bottom-[14%] left-[1%] w-[34%]">
-        <Hornbill pose={6} className="w-full" />
-      </div>
-      <div className="absolute bottom-[13%] right-[4%] w-[17%]">
-        <Hornbill pose={8} rotate={3} className="w-full" />
+      <div className="absolute bottom-[14%] left-[5%] w-[28%]">
+        <Hornbill pose={6} flip className="w-full" />
       </div>
 
       <main className="relative flex flex-1 flex-col items-center justify-center px-8 text-center">
