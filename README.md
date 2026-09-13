@@ -115,13 +115,28 @@ with black labels, and nothing is ever typeset in gold.
 Type is a single family (Plus Jakarta Sans): headings are the same sans at
 extra-bold with tight tracking, rather than a contrasting display serif.
 
-Sarawak motifs live in `components/Motif.tsx` as fine-line SVG drawn from Iban
-*bunga terung* spirals and *pua kumbu* geometry — corner marks on the photo
-frame, a rule under headings, and one pale watermark behind the idle screen.
+Decoration comes from the **hornbill** — the bird Sarawak is named for — placed
+in the white space of each screen at varying size and pose.
 
 **Wording:** the UI says "ethnic group", never "culture". The two exceptions are
 the proper nouns *Borneo Cultures Museum* and *Sarawak Cultural Village*, which
 are the real names of real institutions.
+
+## Hornbill artwork
+
+The birds are sliced out of a single supplied artwork sheet:
+
+1. Drop the sheet at `public/hornbills/sheet.png` (`.jpg`/`.jpeg`/`.webp` also work)
+2. `npm run hornbills`
+
+That writes `hornbill-1.png … hornbill-N.png`, numbered top-to-bottom then
+left-to-right, cut out with transparent backgrounds. The slicer flood-fills the
+background inward from the border rather than treating every white pixel as
+background, so white markings *inside* a bird — the tail bands — stay opaque.
+
+Screens reference poses by number, e.g. `<Hornbill pose={5} flip rotate={-6} />`.
+If the artwork is absent the component removes itself, so the layout is designed
+to read with or without the birds.
 
 ## Kiosk layout
 

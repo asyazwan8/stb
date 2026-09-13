@@ -5,6 +5,7 @@ import { Masthead } from "@/components/Masthead";
 import { StepBar } from "@/components/StepBar";
 import { EthnicCard } from "@/components/EthnicCard";
 import { ETHNICS, type Ethnic } from "@/lib/ethnics";
+import { Hornbill } from "@/components/Hornbill";
 
 export function EthnicSelectScreen({
   selectedId,
@@ -29,7 +30,7 @@ export function EthnicSelectScreen({
   };
 
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="relative flex h-full flex-col overflow-hidden bg-white">
       <Masthead compact step={{ current: 0, total: 4, label: "Choose an ethnic group" }} />
 
       <main className="flex flex-1 flex-col justify-center overflow-y-auto px-6 pb-6">
@@ -69,6 +70,13 @@ export function EthnicSelectScreen({
           </span>
         </div>
       ) : null}
+
+      <div className="pointer-events-none absolute -bottom-[1%] -left-[5%] w-[34%]">
+        <Hornbill pose={6} rotate={3} className="w-full" />
+      </div>
+      <div className="pointer-events-none absolute bottom-[14%] right-[-3%] w-[24%]">
+        <Hornbill pose={3} flip className="w-full" />
+      </div>
 
       <StepBar
         onBack={onBack}

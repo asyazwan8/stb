@@ -1,50 +1,58 @@
 "use client";
 
-import { Masthead } from "@/components/Masthead";
-import { MotifDivider, MotifWatermark } from "@/components/Motif";
+/* eslint-disable @next/next/no-img-element */
+import { Hornbill } from "@/components/Hornbill";
 
 export function AttractScreen({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex h-full flex-col bg-white">
-      <Masthead />
+    <div className="relative flex h-full flex-col overflow-hidden bg-white">
+      {/* Hornbills fill the quiet corners of a very tall panel. Big and in
+          flight up top, smaller and perched down low. */}
+      <div className="animate-float absolute -left-[12%] top-[6%] w-[62%]">
+        <Hornbill pose={5} rotate={-6} className="w-full" />
+      </div>
+      <div
+        className="animate-float absolute -right-[8%] top-[26%] w-[38%]"
+        style={{ animationDelay: "-2.3s" }}
+      >
+        <Hornbill pose={2} flip rotate={8} className="w-full" />
+      </div>
+      <div className="absolute -bottom-[2%] -left-[4%] w-[32%]">
+        <Hornbill pose={8} rotate={4} className="w-full" />
+      </div>
+      <div className="absolute bottom-[9%] right-[1%] w-[28%]">
+        <Hornbill pose={4} flip rotate={-3} className="w-full" />
+      </div>
 
-      <main className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-8 text-center">
-        {/* One oversized pale motif, sitting behind the type. The idle screen
-            no longer advertises destinations — that belongs on the loading
-            screen, where there is dwell time to read it. */}
-        <MotifWatermark
-          className="pointer-events-none absolute left-1/2 top-1/2 w-[118%] -translate-x-1/2 -translate-y-1/2 text-ink/[0.055]"
+      <main className="relative flex flex-1 flex-col items-center justify-center px-8 text-center">
+        {/* The masthead is the hero here, not a header bar. */}
+        <img
+          src="/brand/stb-masthead.png"
+          alt="Sarawak — Gateway to Borneo"
+          className="animate-fade-up w-[78%] max-w-none"
         />
 
-        <div className="animate-fade-up relative">
-          <h1 className="font-display tracking-tight text-[3.15rem] font-extrabold leading-[1.06] text-ink">
-            Wear the
-            <br />
-            stories of
-            <br />
-            Sarawak
-          </h1>
+        <h1 className="animate-fade-up mt-10 text-[2.1rem] font-extrabold leading-tight tracking-tight text-ink">
+          Wear the stories of Sarawak
+        </h1>
 
-          <MotifDivider className="mx-auto mt-6 h-4 w-56 text-ink/30" />
+        <p className="animate-fade-up mx-auto mt-4 max-w-md text-[1.1875rem] leading-relaxed text-muted">
+          Step into traditional dress, find out what every piece means, and take
+          the portrait home.
+        </p>
 
-          <p className="mx-auto mt-6 max-w-md text-[1.1875rem] leading-relaxed text-muted">
-            Step into the traditional dress of Sarawak&rsquo;s people, learn what
-            every piece means, and take the portrait home.
-          </p>
+        <button
+          type="button"
+          onClick={onStart}
+          className="animate-fade-up mt-10 h-24 w-full max-w-md rounded-full bg-gold text-[1.75rem] font-extrabold tracking-tight text-ink shadow-lg shadow-gold/30 transition active:scale-[0.97] active:bg-gold-deep"
+        >
+          Tap to start
+        </button>
 
-          <button
-            type="button"
-            onClick={onStart}
-            className="mt-10 h-20 w-full max-w-sm rounded-full bg-gold text-2xl font-bold text-ink transition active:scale-[0.97] active:bg-gold-deep"
-          >
-            Start
-          </button>
-
-          <p className="mt-5 text-sm text-muted">Takes about a minute</p>
-        </div>
+        <p className="mt-5 text-sm text-muted">Takes about a minute</p>
       </main>
 
-      <div className="kiosk-no-select kiosk-reach-bottom shrink-0 px-8">
+      <div className="kiosk-no-select kiosk-reach-bottom relative shrink-0 px-8">
         <p className="text-center text-xs leading-relaxed text-muted">
           A demonstration for the Sarawak Tourism Board. Photos are used only to
           create your portrait and are not stored by this kiosk.

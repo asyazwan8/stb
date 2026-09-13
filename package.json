@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "prebuild": "node scripts/generate-placeholders.mjs"
+    "prebuild": "node scripts/generate-placeholders.mjs",
+    "hornbills": "node scripts/slice-hornbills.mjs"
   },
   "dependencies": {
     "@fal-ai/client": "^1.6.2",

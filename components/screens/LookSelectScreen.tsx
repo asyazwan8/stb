@@ -4,6 +4,7 @@
 import { Masthead } from "@/components/Masthead";
 import { StepBar } from "@/components/StepBar";
 import type { Ethnic, Gender } from "@/lib/ethnics";
+import { Hornbill } from "@/components/Hornbill";
 
 export function LookSelectScreen({
   ethnic,
@@ -19,7 +20,7 @@ export function LookSelectScreen({
   onNext: () => void;
 }) {
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="relative flex h-full flex-col overflow-hidden bg-white">
       <Masthead compact step={{ current: 1, total: 4, label: "Choose your look" }} />
 
       <main className="flex flex-1 flex-col justify-center overflow-y-auto px-6 pb-6">
@@ -79,6 +80,10 @@ export function LookSelectScreen({
           </div>
         </div>
       </main>
+
+      <div className="pointer-events-none absolute bottom-[12%] right-[-4%] w-[30%]">
+        <Hornbill pose={7} flip rotate={-4} className="w-full" />
+      </div>
 
       <StepBar
         onBack={onBack}

@@ -1,7 +1,6 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { MotifCorner } from "@/components/Motif";
 import { FRAME_WINDOW } from "@/lib/places";
 
 /**
@@ -38,20 +37,6 @@ export function PhotoFrame({
         />
       </div>
 
-      {/* Motif brackets, one rotated into each corner. */}
-      <MotifCorner className="absolute left-[1.6%] top-[2.1%] text-ink/35" size="6%" />
-      <MotifCorner
-        className="absolute right-[1.6%] top-[2.1%] scale-x-[-1] text-ink/35"
-        size="6%"
-      />
-      <MotifCorner
-        className="absolute bottom-[2.1%] left-[1.6%] scale-y-[-1] text-ink/35"
-        size="6%"
-      />
-      <MotifCorner
-        className="absolute bottom-[2.1%] right-[1.6%] scale-[-1] text-ink/35"
-        size="6%"
-      />
     </div>
   );
 }

@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { Masthead } from "@/components/Masthead";
 import { PhotoFrame } from "@/components/PhotoFrame";
-import { MotifDivider } from "@/components/Motif";
 import { PLACES } from "@/lib/places";
+import { Hornbill } from "@/components/Hornbill";
 import type { SwapState } from "@/lib/useFaceSwap";
 
 const STATUS_COPY = [
@@ -80,10 +80,14 @@ export function ProcessingScreen({
   }
 
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="relative flex h-full flex-col overflow-hidden bg-white">
       <Masthead compact />
 
-      <main className="kiosk-reach-bottom flex min-h-0 flex-1 flex-col px-8">
+      <div className="animate-float pointer-events-none absolute right-[-6%] top-[7%] w-[30%]">
+        <Hornbill pose={1} flip rotate={-5} className="w-full" />
+      </div>
+
+      <main className="kiosk-reach-bottom relative flex min-h-0 flex-1 flex-col px-8">
         <div className="flex-[0.85]" />
 
         {/* Carousel of framed prints. Every photo is rendered and cross-faded,
@@ -134,8 +138,6 @@ export function ProcessingScreen({
           <p className="mt-1.5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-muted">
             {place.region}
           </p>
-
-          <MotifDivider className="mx-auto mt-4 h-3.5 w-44 text-ink/25" />
 
           <p
             key={`${place.id}-hook`}

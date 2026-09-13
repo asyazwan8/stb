@@ -124,6 +124,16 @@ button,
   }
 }
 
+@keyframes stb-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.4%);
+  }
+}
+
 @keyframes stb-shimmer {
   from {
     transform: translateX(-100%);
@@ -145,11 +155,16 @@ button,
 .animate-shimmer {
   animation: stb-shimmer 1.8s linear infinite;
 }
+/* Wraps the Hornbill, which owns its own transform for flip/rotate. */
+.animate-float {
+  animation: stb-float 7s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-fade,
   .animate-hotspot,
+  .animate-float,
   .animate-shimmer {
     animation: none !important;
   }
