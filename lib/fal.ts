@@ -109,7 +109,7 @@ export type SwapInput = {
   image_urls: string[];
   num_images: number;
   output_format: "jpeg";
-  aspect_ratio: Look["falAspectRatio"];
+  aspect_ratio: "auto";
   resolution: "1K" | "2K" | "4K";
   limit_generations: boolean;
 };
@@ -126,7 +126,15 @@ export function buildSwapInput(opts: {
     image_urls: [opts.referenceDataUri, opts.selfieDataUri],
     num_images: 1,
     output_format: "jpeg",
-    aspect_ratio: opts.look.falAspectRatio,
+    // "auto" makes the output match the reference's own frame.
+    // Naming a fixed ratio forced the model to re-compose the picture:
+    // the male reference is 768x1376 (0.558) and we were asking for 3:4
+    // (0.750), a 34% error, so it cropped vertically and scaled the
+    // content up — which is what was enlarging the head. No prompt
+    // wording could override that, because it is a framing operation.
+    // "auto" also survives STB replacing a reference with a
+    // differently-shaped photo, which has already happened three times.
+    aspect_ratio: "auto",
     resolution: "2K",
     // Stops the model deciding on its own to return a set of variations.
     limit_generations: true,
