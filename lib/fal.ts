@@ -66,14 +66,6 @@ export async function loadReferenceDataUri(look: Look): Promise<string> {
  * Two explicit preserve-lists. Stating both sides stops the model from trading
  * one requirement for the other — the common failure mode here is a beautiful
  * costume wearing a generic face, or an accurate face in a restyled outfit.
- *
- * SCALE is called out separately because the first live run came back with the
- * visitor's head noticeably too large. The cause was a contradiction in this
- * prompt rather than weak wording: the IMAGE 2 list asked for the face's
- * "exact proportions", which reads as the proportions it has in the selfie —
- * a close-up — while the only counter-instruction was one clause buried at the
- * end of BLENDING. The close-up won. Scale is now its own rule, "proportions"
- * is scoped to within the face, and IMAGE 1 is declared the winner outright.
  */
 export function buildSwapPrompt(opts: {
   ethnicName: string;
@@ -94,13 +86,11 @@ export function buildSwapPrompt(opts: {
     ``,
     `PRESERVE FROM IMAGE 1, completely unchanged: the pose and body position; the arms, hands and fingers; the entire traditional costume including the ${headgear} headdress, all beadwork, silverwork, coins, fringing and handwoven textile; the longhouse setting and every background detail; the camera angle, crop and framing; the depth of field; and the warm lantern lighting and colour grade.`,
     ``,
-    `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the shape of the face and the relationships between its features — eye shape and spacing, eyebrows, the nose, the mouth and lips, cheekbones, jawline and chin — together with skin tone, complexion, skin texture and any facial hair. These are proportions WITHIN the face. They say nothing about how large the face should be in the finished picture; that is fixed by IMAGE 1 and governed by SCALE below. The finished portrait must be immediately recognisable as this same person.`,
+    `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the exact face shape and proportions, eye shape and spacing, eyebrows, nose, mouth and lips, cheekbones, jawline and chin, skin tone and complexion, skin texture, and any facial hair. The finished portrait must be immediately recognisable as this same person.`,
     ``,
-    `SCALE — the single most common failure here, so treat it as a hard constraint. IMAGE 2 is a close-up: the face fills that frame and is therefore far larger than the head in IMAGE 1. Scale it DOWN to fit the head that already exists in IMAGE 1. The head, face and neck must occupy exactly the same area of the finished frame as they do in IMAGE 1 — the same width across the cheekbones, the same distance from chin to hairline, the same size relative to the shoulders and body — so that the ${headgear} continues to sit on the head exactly as it does in IMAGE 1, at the same size and position. Never enlarge the head, widen the face, or let the head grow toward its size in IMAGE 2. Where the two photographs disagree about head size, IMAGE 1 always wins. If you are uncertain, err slightly SMALLER: a slightly small head reads as natural, while a slightly large one immediately reads as a bad composite.`,
+    `BLENDING: relight the transplanted face to match IMAGE 1's warm directional lantern light; carry the skin tone continuously into the neck and ears so there is no visible seam, edge or tonal break. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
     ``,
-    `BLENDING: relight the transplanted face to match IMAGE 1's warm directional lantern light; carry the skin tone continuously into the neck and ears so there is no visible seam, edge or tonal break. Keep the head at the same tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
-    ``,
-    `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1, with the head at the same size as in IMAGE 1. Do not add text, captions, watermarks, borders or additional people. Do not restyle, re-colour or modify the costume or headdress in any way.`,
+    `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1. Do not add text, captions, watermarks, borders or additional people. Do not restyle, re-colour or modify the costume or headdress in any way.`,
   ].join("\n");
 }
 
@@ -109,7 +99,7 @@ export type SwapInput = {
   image_urls: string[];
   num_images: number;
   output_format: "jpeg";
-  aspect_ratio: "auto";
+  aspect_ratio: Look["falAspectRatio"];
   resolution: "1K" | "2K" | "4K";
   limit_generations: boolean;
 };
@@ -126,15 +116,7 @@ export function buildSwapInput(opts: {
     image_urls: [opts.referenceDataUri, opts.selfieDataUri],
     num_images: 1,
     output_format: "jpeg",
-    // "auto" makes the output match the reference's own frame.
-    // Naming a fixed ratio forced the model to re-compose the picture:
-    // the male reference is 768x1376 (0.558) and we were asking for 3:4
-    // (0.750), a 34% error, so it cropped vertically and scaled the
-    // content up — which is what was enlarging the head. No prompt
-    // wording could override that, because it is a framing operation.
-    // "auto" also survives STB replacing a reference with a
-    // differently-shaped photo, which has already happened three times.
-    aspect_ratio: "auto",
+    aspect_ratio: opts.look.falAspectRatio,
     resolution: "2K",
     // Stops the model deciding on its own to return a set of variations.
     limit_generations: true,

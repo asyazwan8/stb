@@ -32,6 +32,8 @@ export type Look = {
   image: string;
   /** Intrinsic aspect ratio of the reference photo, used to anchor hotspots. */
   aspect: { w: number; h: number };
+  /** Passed to the model so the output keeps the reference's shape. */
+  falAspectRatio: "2:3" | "3:4" | "9:16" | "4:5";
   hotspots: Hotspot[];
 };
 
@@ -63,6 +65,7 @@ export const ETHNICS: Ethnic[] = [
         label: "Female",
         image: "/references/iban-female.jpeg",
         aspect: { w: 843, h: 1264 },
+        falAspectRatio: "2:3",
         hotspots: [
           {
             id: "sugu-tinggi",
@@ -109,6 +112,7 @@ export const ETHNICS: Ethnic[] = [
         label: "Male",
         image: "/references/iban-male.jpeg",
         aspect: { w: 768, h: 1376 },
+        falAspectRatio: "3:4",
         hotspots: [
           {
             id: "ketapu",
