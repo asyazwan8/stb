@@ -96,8 +96,10 @@ kiosk, which then shows a fresh code. Reloading the phone resumes where it was.
 The phone and kiosk meet through a small shared store, because Vercel
 functions don't share memory:
 
-1. **Vercel → Project → Storage → Create Database → Upstash for Redis** (the
-   free tier is plenty), and connect it to this project for all environments.
+1. **Vercel → Project → Storage → Create Database → Upstash for Redis**, and
+   connect it to this project for all environments. For a kiosk that stays on,
+   pick the **pay-as-you-go** plan (a monthly budget cap is a good idea) — see
+   the note on polling below.
 2. Redeploy. The integration sets `KV_REST_API_URL` and `KV_REST_API_TOKEN`;
    a database made on upstash.com directly can use `UPSTASH_REDIS_REST_URL` /
    `UPSTASH_REDIS_REST_TOKEN` instead.
@@ -118,8 +120,14 @@ and open the kiosk at your computer's LAN address, not `localhost`.
   it straight to fal, as on the touch kiosk. The session holds only the choices,
   the fal queue id and the finished image URL, and expires after 20 minutes.
 - The kiosk polls once a second during a session and every two seconds while
-  idle. Left on around the clock that is roughly 1.3M Redis reads a month — past
-  Upstash's free tier, so switch the kiosk off overnight or expect a small pay-as-you-go bill.
+  idle — about 43K Redis reads a day, or roughly 1.3M a month if it never
+  switches off. Upstash's free plan (500K commands a month at the time of
+  writing) does not bill for more: it **stops**, and `/demo-qr` then shows
+  "not connected" until the month resets. That is fine for a demo day or two;
+  for a standing install, use pay-as-you-go (a few dollars a month at most) or
+  switch the kiosk off overnight.
+- No visitor can hold the kiosk for more than 15 minutes, and a phone that goes
+  quiet for four frees it sooner.
 
 ## How the face swap works
 

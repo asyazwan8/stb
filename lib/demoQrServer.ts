@@ -5,6 +5,7 @@ import { checkSwap, describeFalError } from "./fal";
 import {
   IDLE_TIMEOUT_MS,
   INITIAL_SELECTION,
+  MAX_SESSION_MS,
   PROCESSING_TIMEOUT_MS,
   SESSION_ID_PATTERN,
   SESSION_TTL_SECONDS,
@@ -130,6 +131,7 @@ export async function createSession(): Promise<DemoSession> {
     error: null,
     endedReason: null,
     createdAt: now,
+    joinedAt: null,
     updatedAt: now,
     kioskToken: randomId(16),
     phoneToken: null,
@@ -157,7 +159,7 @@ export const newToken = () => randomId(16);
 /**
  * Moves a session along on read: notices the finished portrait, gives up on
  * one that is taking too long, and frees the kiosk from a phone that went
- * quiet. Only writes when something actually changed.
+ * quiet or has simply held it too long. Only writes when something changed.
  */
 export async function advanceSession(session: DemoSession): Promise<DemoSession> {
   const now = Date.now();
@@ -190,10 +192,10 @@ export async function advanceSession(session: DemoSession): Promise<DemoSession>
     return session;
   }
 
-  if (
-    (session.phase === "selecting" || session.phase === "error") &&
-    now - session.updatedAt > IDLE_TIMEOUT_MS
-  ) {
+  const quiet = now - session.updatedAt > IDLE_TIMEOUT_MS;
+  const overstayed =
+    session.joinedAt !== null && now - session.joinedAt > MAX_SESSION_MS;
+  if ((session.phase === "selecting" || session.phase === "error") && (quiet || overstayed)) {
     session.phase = "ended";
     session.endedReason = "timeout";
     await saveSession(session);

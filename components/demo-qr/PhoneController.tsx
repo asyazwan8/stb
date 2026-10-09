@@ -16,7 +16,7 @@ import { PRIMARY_BUTTON, SECONDARY_BUTTON, StatusScreen } from "./StatusScreen";
  * whose own QR code is how it gets saved.
  */
 export function PhoneController({ id }: { id: string }) {
-  const { conn, selection: sel, choose, submitPhoto, sending, finish, serverNow } =
+  const { conn, selection: sel, choose, submitPhoto, sending, localError, finish, serverNow } =
     usePhoneSession(id);
   // Kept so a failed attempt can be retried without retaking the photo.
   const photo = useRef<string | null>(null);
@@ -82,12 +82,12 @@ export function PhoneController({ id }: { id: string }) {
     );
   }
 
-  if (session.phase === "error") {
+  if (localError || session.phase === "error") {
     return (
       <StatusScreen
         eyebrow="Something went wrong"
         title="That didn’t work"
-        body={session.error ?? "Please try again."}
+        body={localError ?? session.error ?? "Please try again."}
       >
         {photo.current ? (
           <button

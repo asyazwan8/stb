@@ -54,6 +54,8 @@ export type DemoSession = DemoSelection & {
   error: string | null;
   endedReason: DemoEndReason | null;
   createdAt: number;
+  /** When the phone claimed it — the clock for the hard session cap. */
+  joinedAt: number | null;
   updatedAt: number;
   kioskToken: string;
   phoneToken: string | null;
@@ -78,6 +80,12 @@ export const INITIAL_SELECTION: DemoSelection = {
 export const SESSION_TTL_SECONDS = 20 * 60;
 /** A phone that stops tapping frees the kiosk for the next visitor. */
 export const IDLE_TIMEOUT_MS = 4 * 60 * 1000;
+/**
+ * However busy the phone is, nobody holds the kiosk longer than this. A real
+ * visit takes a few minutes; without a cap, one phone that keeps tapping (or
+ * a script replaying its token) could keep everyone else out indefinitely.
+ */
+export const MAX_SESSION_MS = 15 * 60 * 1000;
 /** Matches the touch kiosk's own give-up point. */
 export const PROCESSING_TIMEOUT_MS = 180_000;
 

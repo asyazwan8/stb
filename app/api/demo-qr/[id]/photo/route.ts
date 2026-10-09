@@ -1,3 +1,4 @@
+import { parseSelection } from "@/lib/demoQr";
 import { SwapInputError, describeFalError, submitSwap } from "@/lib/fal";
 import {
   NO_STORE,
@@ -19,13 +20,17 @@ type Params = { params: Promise<{ id: string }> };
 /**
  * The phone's selfie. It goes straight to fal and is never written to the
  * session — only the queue id is kept.
+ *
+ * The phone's latest selection rides along with it. Its choices are written
+ * in the background, so if the one that moved it to the camera step was lost
+ * on bad Wi-Fi, the server would otherwise refuse every photo it takes.
  */
 export async function POST(request: Request, { params }: Params) {
   const { id } = await params;
 
-  let photo: unknown;
+  let body: { photo?: unknown; seq?: unknown; selection?: unknown };
   try {
-    ({ photo } = (await request.json()) as { photo?: unknown });
+    body = (await request.json()) as typeof body;
   } catch {
     return errorResponse("Malformed request body.", 400);
   }
@@ -39,6 +44,17 @@ export async function POST(request: Request, { params }: Params) {
     if (session.phase !== "selecting" && session.phase !== "error") {
       return errorResponse("A photo has already been sent.", 409, session.phase);
     }
+
+    const selection = parseSelection(body.selection);
+    if (
+      selection &&
+      typeof body.seq === "number" &&
+      Number.isInteger(body.seq) &&
+      body.seq > session.seq
+    ) {
+      Object.assign(session, selection, { seq: body.seq });
+    }
+
     if (session.step !== "camera" || !session.ethnicId || !session.gender) {
       return errorResponse("Choose a look before taking your photo.", 409, "not-ready");
     }
@@ -54,7 +70,7 @@ export async function POST(request: Request, { params }: Params) {
 
     try {
       const { requestId } = await submitSwap({
-        photo,
+        photo: body.photo,
         ethnicId: session.ethnicId,
         gender: session.gender,
       });
@@ -69,7 +85,12 @@ export async function POST(request: Request, { params }: Params) {
       session.phase = "error";
       session.error = message;
       await saveSession(session);
-      return viewResponse(session, { status, ...NO_STORE });
+      // Not fal's own status: a 403 or 404 from fal (an exhausted balance, a
+      // mistyped model) must not read to the phone as "taken" or "expired".
+      return viewResponse(session, {
+        status: err instanceof SwapInputError ? err.status : 502,
+        ...NO_STORE,
+      });
     }
   } catch (err) {
     return storeErrorResponse(err);

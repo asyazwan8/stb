@@ -234,28 +234,38 @@ function joinOnce(id: string) {
 
 /**
  * Joins the session from the QR, then drives it. Choices update the phone
- * immediately and are written in the background; the server keeps only the
- * newest. A reload rejoins with the stored token and resumes where it was.
+ * immediately and are written in the background, one request at a time and
+ * retried, so the server always ends up with the newest. A reload rejoins
+ * with the stored token and resumes where it was.
  */
 export function usePhoneSession(id: string) {
   const [conn, setConn] = useState<PhoneConnection>({ status: "joining" });
   const [selection, setSelection] = useState<DemoSelection>(INITIAL_SELECTION);
   const [sending, setSending] = useState(false);
+  /** A failure the server never heard about. A poll must not clear it. */
+  const [localError, setLocalError] = useState<string | null>(null);
   const token = useRef<string | null>(null);
   const seq = useRef(0);
   const current = useRef<DemoSelection>(INITIAL_SELECTION);
   /** Newest server write seen — a slow reply must not undo a newer state. */
   const newest = useRef(0);
+  /** The newest choice the server hasn't acknowledged yet. */
+  const outbox = useRef<{ seq: number; selection: DemoSelection } | null>(null);
+  const flushing = useRef(false);
   const { note, serverNow } = useClockOffset();
 
-  /** Shared handling for any reply that says the session is over or lost. */
+  /**
+   * Shared handling for every reply. Protocol codes come first, then any
+   * session the reply carries; bare HTTP statuses only as a last resort, so
+   * an upstream 403 or 404 can never read as "taken" or "expired".
+   */
   const settle = useCallback(
     (status: number, body: Json): boolean => {
-      if (status === 404 || status === 410 || body.code === "expired") {
+      if (body.code === "expired") {
         setConn({ status: "expired" });
         return true;
       }
-      if (status === 403 || body.code === "taken") {
+      if (body.code === "taken") {
         setConn({ status: "taken" });
         return true;
       }
@@ -268,14 +278,67 @@ export function usePhoneSession(id: string) {
         if (view.updatedAt >= newest.current) {
           newest.current = view.updatedAt;
           note(view);
+          // The server has moved on, so it knows more than a local failure.
+          if (view.phase !== "selecting") setLocalError(null);
           setConn({ status: "live", session: view });
         }
+        return true;
+      }
+      if (status === 404 || status === 410) {
+        setConn({ status: "expired" });
+        return true;
+      }
+      if (status === 403) {
+        setConn({ status: "taken" });
         return true;
       }
       return false;
     },
     [note],
   );
+
+  /**
+   * Sends the outbox, one request at a time. Taps that arrive meanwhile just
+   * replace what is waiting, so the server sees choices in order (its seq
+   * check is a read-then-write, not atomic) and a dropped request is retried.
+   */
+  const flush = useCallback(async () => {
+    if (flushing.current) return;
+    flushing.current = true;
+    let failures = 0;
+    try {
+      while (outbox.current) {
+        const msg = outbox.current;
+        let delivered = false;
+        try {
+          const { status, body } = await call(`/api/demo-qr/${id}`, {
+            method: "PATCH",
+            token: token.current,
+            json: msg,
+          });
+          // Anything but a server-side failure is final: applied, superseded,
+          // or refused for a reason a retry would not change.
+          delivered = settle(status, body) || status < 500;
+        } catch {
+          // Offline for a moment.
+        }
+        if (outbox.current !== msg) {
+          failures = 0; // A newer choice replaced it; send that next.
+          continue;
+        }
+        if (delivered) {
+          outbox.current = null;
+          break;
+        }
+        failures += 1;
+        // Past this, leave it to the poll, which resends when the server is behind.
+        if (failures >= 6) break;
+        await sleep(Math.min(4000, 300 * 2 ** failures));
+      }
+    } finally {
+      flushing.current = false;
+    }
+  }, [id, settle]);
 
   // Join, then keep an eye on the session.
   useEffect(() => {
@@ -316,8 +379,14 @@ export function usePhoneSession(id: string) {
           });
           if (!alive) return;
           settle(status, body);
-          phase = body.session?.phase;
+          const view = body.session;
+          phase = view?.phase;
           if (status === 404 || phase === "ended") return;
+          // The server is behind this phone — a write was lost for good.
+          if (view?.phase === "selecting" && view.seq < seq.current && !flushing.current) {
+            outbox.current = { seq: seq.current, selection: current.current };
+            void flush();
+          }
         } catch {
           // Try again next tick.
         }
@@ -327,7 +396,7 @@ export function usePhoneSession(id: string) {
     return () => {
       alive = false;
     };
-  }, [id, settle]);
+  }, [id, settle, flush]);
 
   /** Apply a choice locally and send it. `pick` stamps the feedback. */
   const choose = useCallback(
@@ -340,47 +409,35 @@ export function usePhoneSession(id: string) {
       };
       current.current = stamped;
       setSelection(stamped);
-
-      void call(`/api/demo-qr/${id}`, {
-        method: "PATCH",
-        token: token.current,
-        json: { seq: n, selection: stamped },
-      })
-        .then(({ status, body }) => {
-          settle(status, body);
-        })
-        .catch(() => undefined);
+      setLocalError(null);
+      outbox.current = { seq: n, selection: stamped };
+      void flush();
     },
-    [id, settle],
+    [flush],
   );
-
-  const failLocally = useCallback((message: string) => {
-    setConn((c) =>
-      c.status === "live"
-        ? { status: "live", session: { ...c.session, phase: "error", error: message } }
-        : c,
-    );
-  }, []);
 
   const submitPhoto = useCallback(
     async (photo: string) => {
       setSending(true);
+      setLocalError(null);
       try {
+        // The selection rides along, in case the write that reached the
+        // camera step never landed.
         const { status, body } = await call(`/api/demo-qr/${id}/photo`, {
           method: "POST",
           token: token.current,
-          json: { photo },
+          json: { photo, seq: seq.current, selection: current.current },
         });
         if (!settle(status, body)) {
-          failLocally(body.error ?? "We couldn't send your photo.");
+          setLocalError(body.error ?? "We couldn't send your photo.");
         }
       } catch {
-        failLocally("Connection problem. Please try again.");
+        setLocalError("Connection problem. Please try again.");
       } finally {
         setSending(false);
       }
     },
-    [id, settle, failLocally],
+    [id, settle],
   );
 
   /** The visitor is done — clear the kiosk for the next person. */
@@ -404,7 +461,7 @@ export function usePhoneSession(id: string) {
     );
   }, [id]);
 
-  return { conn, selection, choose, submitPhoto, sending, finish, serverNow };
+  return { conn, selection, choose, submitPhoto, sending, localError, finish, serverNow };
 }
 
 /** Re-renders every `ms` while `active`, for progress bars eased off a clock. */

@@ -51,6 +51,7 @@ export async function POST(request: Request, { params }: Params) {
 
     session.phoneToken = token;
     session.phase = "selecting";
+    session.joinedAt = Date.now();
     await saveSession(session);
     return respond(token, session);
   } catch (err) {
