@@ -1,9 +1,17 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
+import type { ReactNode } from "react";
 import { Hornbill } from "@/components/Hornbill";
 
-export function AttractScreen({ onStart }: { onStart: () => void }) {
+export function AttractScreen({
+  onStart,
+  cta,
+}: {
+  onStart?: () => void;
+  /** Replaces the "Tap to start" button — the phone-controlled kiosk puts its QR here. */
+  cta?: ReactNode;
+}) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden bg-white">
       {/* Hornbills fill the quiet corners of a very tall panel. Big and in
@@ -35,13 +43,15 @@ export function AttractScreen({ onStart }: { onStart: () => void }) {
           the portrait home.
         </p>
 
-        <button
-          type="button"
-          onClick={onStart}
-          className="animate-fade-up mt-10 h-24 w-full max-w-md rounded-full bg-gold text-[1.75rem] font-extrabold tracking-tight text-ink shadow-lg shadow-gold/30 transition active:scale-[0.97] active:bg-gold-deep"
-        >
-          Tap to start
-        </button>
+        {cta ?? (
+          <button
+            type="button"
+            onClick={onStart}
+            className="animate-fade-up mt-10 h-24 w-full max-w-md rounded-full bg-gold text-[1.75rem] font-extrabold tracking-tight text-ink shadow-lg shadow-gold/30 transition active:scale-[0.97] active:bg-gold-deep"
+          >
+            Tap to start
+          </button>
+        )}
 
         <p className="mt-5 text-sm text-muted">Takes about a minute</p>
       </main>

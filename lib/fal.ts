@@ -1,7 +1,7 @@
 import { fal } from "@fal-ai/client";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import type { Look } from "./ethnics";
+import { getEthnic, getLook, type Look } from "./ethnics";
 
 /**
  * Nano Banana Pro reasons hardest about what to preserve vs. change, which is
@@ -123,6 +123,96 @@ export function buildSwapInput(opts: {
   };
 }
 
+/** A request the kiosk should never have sent — carries its own HTTP status. */
+export class SwapInputError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+    this.name = "SwapInputError";
+  }
+}
+
+const MAX_SELFIE_BYTES = 6 * 1024 * 1024;
+
+/**
+ * Validates a capture and queues the face swap. Shared by the touch kiosk
+ * (/api/swap) and the phone-controlled flow (/api/demo-qr/[id]/photo).
+ */
+export async function submitSwap(args: {
+  photo?: unknown;
+  ethnicId?: unknown;
+  gender?: unknown;
+}): Promise<{ requestId: string }> {
+  const { photo, ethnicId, gender } = args;
+
+  if (typeof photo !== "string" || !photo.startsWith("data:image/")) {
+    throw new SwapInputError("A captured photo is required.", 400);
+  }
+  if (photo.length > MAX_SELFIE_BYTES) {
+    throw new SwapInputError("That photo is too large. Please take it again.", 413);
+  }
+  if (gender !== "female" && gender !== "male") {
+    throw new SwapInputError("Unknown look.", 400);
+  }
+
+  const ethnic = typeof ethnicId === "string" ? getEthnic(ethnicId) : undefined;
+  const look = typeof ethnicId === "string" ? getLook(ethnicId, gender) : undefined;
+  if (!ethnic || ethnic.status !== "live" || !look) {
+    throw new SwapInputError("That look is not available yet.", 400);
+  }
+
+  const client = getFalClient();
+  const referenceDataUri = await loadReferenceDataUri(look);
+  const input = buildSwapInput({
+    ethnicName: ethnic.name,
+    look,
+    referenceDataUri,
+    selfieDataUri: photo,
+  });
+
+  const queued = await client.queue.submit(FAL_MODEL, { input });
+  return { requestId: queued.request_id };
+}
+
+type FalImage = { url?: string };
+type FalOutput = { images?: FalImage[]; description?: string };
+
+export type SwapCheck =
+  | { status: "IN_QUEUE" | "IN_PROGRESS"; queuePosition?: number }
+  | { status: "COMPLETED"; imageUrl: string };
+
+export const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,128}$/;
+
+/** One look at the fal queue. Throws SwapInputError for a bad id or empty result. */
+export async function checkSwap(requestId: string): Promise<SwapCheck> {
+  if (!REQUEST_ID_PATTERN.test(requestId)) {
+    throw new SwapInputError("Invalid request id.", 400);
+  }
+
+  const client = getFalClient();
+  const status = await client.queue.status(FAL_MODEL, { requestId });
+
+  if (status.status !== "COMPLETED") {
+    return {
+      status: status.status,
+      queuePosition: status.status === "IN_QUEUE" ? status.queue_position : undefined,
+    };
+  }
+
+  const result = await client.queue.result(FAL_MODEL, { requestId });
+  const data = result.data as FalOutput;
+  const imageUrl = data?.images?.[0]?.url;
+
+  if (!imageUrl) {
+    console.error("[swap] completed with no image", JSON.stringify(data));
+    throw new SwapInputError("The portrait came back empty. Please try again.", 502);
+  }
+
+  return { status: "COMPLETED", imageUrl };
+}
+
 /** Normalises fal SDK errors into something the kiosk can show and we can debug. */
 export function describeFalError(err: unknown): {
   message: string;
@@ -131,6 +221,9 @@ export function describeFalError(err: unknown): {
 } {
   if (err instanceof FalNotConfiguredError) {
     return { message: err.message, status: 503 };
+  }
+  if (err instanceof SwapInputError) {
+    return { message: err.message, status: err.status };
   }
   // ApiError / ValidationError from @fal-ai/client both carry status + body.
   if (typeof err === "object" && err !== null && "status" in err) {

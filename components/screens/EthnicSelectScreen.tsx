@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Masthead } from "@/components/Masthead";
 import { StepBar } from "@/components/StepBar";
 import { EthnicCard } from "@/components/EthnicCard";
@@ -12,11 +12,14 @@ export function EthnicSelectScreen({
   onSelect,
   onBack,
   onNext,
+  footer,
 }: {
   selectedId: string | null;
   onSelect: (id: string) => void;
   onBack: () => void;
   onNext: () => void;
+  /** Replaces the Back/Next bar — the phone-controlled kiosk shows feedback here. */
+  footer?: ReactNode;
 }) {
   const [toast, setToast] = useState<string | null>(null);
 
@@ -78,12 +81,14 @@ export function EthnicSelectScreen({
         <Hornbill pose={7} className="w-full" />
       </div>
 
-      <StepBar
-        onBack={onBack}
-        onNext={onNext}
-        nextDisabled={!selectedId}
-        hint={selectedId ? undefined : "Select an ethnic group to continue"}
-      />
+      {footer ?? (
+        <StepBar
+          onBack={onBack}
+          onNext={onNext}
+          nextDisabled={!selectedId}
+          hint={selectedId ? undefined : "Select an ethnic group to continue"}
+        />
+      )}
     </div>
   );
 }

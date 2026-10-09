@@ -15,11 +15,15 @@ export function ResultScreen({
   ethnic,
   look,
   onRestart,
+  showRestart = true,
 }: {
   imageUrl: string;
   ethnic: Ethnic;
   look: Look;
+  /** Called by the button and by the auto-clear timer. */
   onRestart: () => void;
+  /** Off when the kiosk is driven from a phone and can't be touched. */
+  showRestart?: boolean;
 }) {
   const [remaining, setRemaining] = useState(AUTO_RESET_SECONDS);
 
@@ -79,7 +83,7 @@ export function ResultScreen({
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-stretch">
             <div className="shrink-0 sm:w-52">
-              <QrPanel imageUrl={imageUrl} />
+              <QrPanel path={`/p?src=${encodeURIComponent(imageUrl)}`} />
             </div>
 
             <div className="flex flex-1 flex-col justify-between gap-3">
@@ -91,13 +95,15 @@ export function ResultScreen({
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={onRestart}
-                className="h-16 w-full rounded-full bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
-              >
-                Start over
-              </button>
+              {showRestart ? (
+                <button
+                  type="button"
+                  onClick={onRestart}
+                  className="h-16 w-full rounded-full bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
+                >
+                  Start over
+                </button>
+              ) : null}
             </div>
           </div>
 

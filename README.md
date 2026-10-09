@@ -66,9 +66,60 @@ Two things may need a nudge in `lib/ethnics.ts`:
 | --- | --- | --- |
 | `FAL_KEY` | **yes** | fal.ai API key. Without it the kiosk shows a clear "not configured" message instead of crashing. |
 | `FAL_MODEL` | no | Defaults to `fal-ai/nano-banana-pro/edit`. Set to `fal-ai/nano-banana-2/edit` for a faster but less identity-faithful swap. |
+| `KV_REST_API_URL` / `KV_REST_API_TOKEN` | for `/demo-qr` | Set automatically by Vercel's Upstash for Redis integration. See [Phone-controlled mode](#phone-controlled-mode-demo-qr). |
 
 Set `FAL_KEY` in **Vercel → Project → Settings → Environment Variables** (all
 environments), then redeploy.
+
+## Phone-controlled mode (`/demo-qr`)
+
+A second entry point where the visitor drives everything from their own phone
+and the kiosk never needs a touch, so it also works on a plain display.
+
+1. The kiosk shows a **Scan to start** QR code.
+2. **The kiosk asks, the phone answers.** The big screen shows each question —
+   the ethnic groups, the two looks, the dress with its hotspots — and the phone
+   shows the choices. Every tap is echoed on both screens ("You chose **Iban**",
+   "Bidayuh is coming soon"), and picking a costume detail on the phone opens
+   its story on the kiosk.
+3. The selfie is taken with the phone's camera.
+4. The portrait appears on the kiosk with the usual download QR, which opens
+   the same `/p` page. The phone's **I'm done** button clears the kiosk straight
+   away; otherwise it clears itself after 90 seconds as usual.
+
+The first phone to scan a code owns that session; anyone else who scans it is
+told the screen is in use. A phone that goes quiet for four minutes frees the
+kiosk, which then shows a fresh code. Reloading the phone resumes where it was.
+
+### Setting it up on Vercel
+
+The phone and kiosk meet through a small shared store, because Vercel
+functions don't share memory:
+
+1. **Vercel → Project → Storage → Create Database → Upstash for Redis** (the
+   free tier is plenty), and connect it to this project for all environments.
+2. Redeploy. The integration sets `KV_REST_API_URL` and `KV_REST_API_TOKEN`;
+   a database made on upstash.com directly can use `UPSTASH_REDIS_REST_URL` /
+   `UPSTASH_REDIS_REST_TOKEN` instead.
+
+Until the store is connected, `/demo-qr` on Vercel shows a clear "not
+connected" message rather than half-working. `/` is unaffected either way.
+
+### Trying it locally
+
+With no store configured, `npm run dev` keeps sessions in memory, so it works
+with no setup on one machine. To scan with a real phone, both need the same
+network and the camera needs HTTPS: run `npx next dev --experimental-https`
+and open the kiosk at your computer's LAN address, not `localhost`.
+
+### Notes
+
+- **The selfie is never stored.** The phone posts it once and the server hands
+  it straight to fal, as on the touch kiosk. The session holds only the choices,
+  the fal queue id and the finished image URL, and expires after 20 minutes.
+- The kiosk polls once a second during a session and every two seconds while
+  idle. Left on around the clock that is roughly 1.3M Redis reads a month — past
+  Upstash's free tier, so switch the kiosk off overnight or expect a small pay-as-you-go bill.
 
 ## How the face swap works
 
