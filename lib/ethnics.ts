@@ -4,6 +4,10 @@
  * NOTE FOR STB: the cultural copy below was written carefully but should be
  * reviewed by the Board (or a cultural adviser) before the demo is shown to a
  * live audience. Names and spellings vary between regions and sources.
+ *
+ * Drafted most recently, and most in need of review: every Iban costume
+ * detail other than the two headgear entries, and all Bidayuh and Orang Ulu
+ * copy (descriptions, dress names and costume details).
  */
 
 export type Gender = "female" | "male";
@@ -34,6 +38,11 @@ export type Look = {
   aspect: { w: number; h: number };
   /** Passed to the model so the output keeps the reference's shape. */
   falAspectRatio: "2:3" | "3:4" | "9:16" | "4:5";
+  /**
+   * How the swap prompt describes this photo's setting and light. Omit for
+   * the Iban wording (longhouse, warm lantern light) the prompt was tuned on.
+   */
+  scene?: { setting: string; lighting: string; light: string };
   hotspots: Hotspot[];
 };
 
@@ -44,6 +53,8 @@ export type Ethnic = {
   tagline: string;
   /** Short intro shown on the learn screen. */
   description: string;
+  /** Closing line on the result screen, after "Scan the code to save your portrait, then". */
+  invite: string;
   status: "live" | "coming-soon";
   looks: Look[];
 };
@@ -51,12 +62,21 @@ export type Ethnic = {
 const IBAN_DESCRIPTION =
   "The Iban are Sarawak's largest community — river people who have long lived in longhouses along the Rejang, Lupar and Batang Ai. Their ceremonial dress, the ngepan, is brought out for Gawai Dayak and weddings, layering handwoven pua kumbu with silver that is passed down through generations.";
 
+// Drafted for STB review — see the note at the top of this file.
+const BIDAYUH_DESCRIPTION =
+  "The Bidayuh are the people of the hills south and west of Kuching, around Bau, Padawan and Serian. Their villages once gathered around the baruk, a round head-house raised on stilts. For Gawai, women wear the black jomuh skirt with beaded sashes, coin belts and the sipiah cap, and men the black vest and loincloth of the warrior.";
+
+const ORANG_ULU_DESCRIPTION =
+  "Orang Ulu means \"upriver people\" — the Kayan, Kenyah, Kelabit, Penan and other communities of Sarawak's far interior. They are Borneo's great bead-workers and carvers: their beaded caps, jackets and baby carriers carry hornbill and tiger motifs that once marked a family's rank, and their longhouse walls are painted with sweeping tendrils.";
+
 export const ETHNICS: Ethnic[] = [
   {
     id: "iban",
     name: "Iban",
     tagline: "Longhouse people of the great rivers",
     description: IBAN_DESCRIPTION,
+    invite:
+      "come and see the real thing — the Iban welcome visitors to their longhouses along Sarawak’s rivers.",
     status: "live",
     looks: [
       {
@@ -81,28 +101,31 @@ export const ETHNICS: Ethnic[] = [
             id: "marik-empang",
             label: "Collar",
             name: "Marik Empang",
-            description: "",
+            description:
+              "Strands of beads draped across the shoulders like a cape. Traditionally woven by the wearer’s own hands, the patterns carry family motifs, and the colours flash with every step of the ngajat dance.",
             x: 49,
             y: 42,
-            status: "coming-soon",
+            status: "live",
           },
           {
             id: "rawai",
             label: "Corset",
             name: "Rawai & Lampit",
-            description: "",
+            description:
+              "The rawai is a corset of rattan hoops strung with small silver rings, wound tightly around the waist. Below it sits the lampit, a belt of linked silver coins. Together they are the heaviest silver a woman wears — and the proudest.",
             x: 55,
             y: 60,
-            status: "coming-soon",
+            status: "live",
           },
           {
             id: "kain-kebat",
             label: "Skirt",
             name: "Kain Kebat",
-            description: "",
+            description:
+              "A short tube skirt woven on a backstrap loom with the ikat technique: the threads are tie-dyed before weaving, so the pattern appears as the cloth is made. Mastering it was once a mark of a woman’s skill and standing.",
             x: 48,
             y: 77,
-            status: "coming-soon",
+            status: "live",
           },
         ],
       },
@@ -128,28 +151,31 @@ export const ETHNICS: Ethnic[] = [
             id: "baju-burung",
             label: "Vest",
             name: "Baju Burung",
-            description: "",
+            description:
+              "A sleeveless jacket woven in the same ikat or sungkit techniques as the pua kumbu. Its motifs — hornbills, spirits, patterns passed down through families — were believed to protect the man who wore it.",
             x: 50,
             y: 45,
-            status: "coming-soon",
+            status: "live",
           },
           {
             id: "ilang",
             label: "Blade",
             name: "Ilang",
-            description: "",
+            description:
+              "A sword with a carved hilt, often of deer antler, and a scabbard bound with rattan. The ilang is famously forged by the Kayan and Kenyah upriver and was prized and traded across Borneo, the Iban among them.",
             x: 33,
             y: 56,
-            status: "coming-soon",
+            status: "live",
           },
           {
             id: "sirat",
             label: "Sirat",
             name: "Sirat",
-            description: "",
+            description:
+              "A long loincloth wrapped around the waist and between the legs, its decorated ends hanging down at front and back. The simplest piece of the ngepan lelaki, and the oldest.",
             x: 50,
             y: 66,
-            status: "coming-soon",
+            status: "live",
           },
         ],
       },
@@ -159,7 +185,9 @@ export const ETHNICS: Ethnic[] = [
     id: "bidayuh",
     name: "Bidayuh",
     tagline: "Hill people of the Sarawak highlands",
-    description: "",
+    description: BIDAYUH_DESCRIPTION,
+    invite:
+      "come and see the real thing — Bidayuh villages in the hills near Kuching welcome visitors at Gawai.",
     status: "coming-soon",
     looks: [],
   },
@@ -167,7 +195,9 @@ export const ETHNICS: Ethnic[] = [
     id: "orang-ulu",
     name: "Orang Ulu",
     tagline: "Artists of the upriver interior",
-    description: "",
+    description: ORANG_ULU_DESCRIPTION,
+    invite:
+      "come and see the real thing — the Orang Ulu welcome visitors to their longhouses deep in Sarawak’s interior.",
     status: "coming-soon",
     looks: [],
   },
@@ -176,6 +206,7 @@ export const ETHNICS: Ethnic[] = [
     name: "Melanau",
     tagline: "Coastal builders of the tall houses",
     description: "",
+    invite: "",
     status: "coming-soon",
     looks: [],
   },

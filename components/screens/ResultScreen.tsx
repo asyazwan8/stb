@@ -89,9 +89,7 @@ export function ResultScreen({
             <div className="flex flex-1 flex-col justify-between gap-3">
               <div className="rounded-3xl bg-surface px-5 py-3.5">
                 <p className="text-[0.9375rem] leading-relaxed text-muted">
-                  Scan the code to save your portrait, then come and see the real
-                  thing — the {ethnic.name} welcome visitors to their longhouses
-                  along Sarawak&rsquo;s rivers.
+                  Scan the code to save your portrait, then {ethnic.invite}
                 </p>
               </div>
 

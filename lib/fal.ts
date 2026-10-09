@@ -73,8 +73,8 @@ export function buildSwapPrompt(opts: {
 }): string {
   const { ethnicName, look } = opts;
   const headgear =
-    look.hotspots.find((h) => h.id === "sugu-tinggi" || h.id === "ketapu")
-      ?.name ?? "headdress";
+    look.hotspots.find((h) => h.label === "Headgear")?.name ?? "headdress";
+  const scene = look.scene ?? DEFAULT_SCENE;
 
   return [
     `You are compositing one photorealistic portrait from two photographs.`,
@@ -84,15 +84,22 @@ export function buildSwapPrompt(opts: {
     ``,
     `TASK: replace only the face of the person in IMAGE 1 with the face of the person in IMAGE 2.`,
     ``,
-    `PRESERVE FROM IMAGE 1, completely unchanged: the pose and body position; the arms, hands and fingers; the entire traditional costume including the ${headgear} headdress, all beadwork, silverwork, coins, fringing and handwoven textile; the longhouse setting and every background detail; the camera angle, crop and framing; the depth of field; and the warm lantern lighting and colour grade.`,
+    `PRESERVE FROM IMAGE 1, completely unchanged: the pose and body position; the arms, hands and fingers; the entire traditional costume including the ${headgear} headdress, all beadwork, silverwork, coins, fringing and handwoven textile; the ${scene.setting} and every background detail; the camera angle, crop and framing; the depth of field; and the ${scene.lighting} and colour grade.`,
     ``,
     `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the exact face shape and proportions, eye shape and spacing, eyebrows, nose, mouth and lips, cheekbones, jawline and chin, skin tone and complexion, skin texture, and any facial hair. The finished portrait must be immediately recognisable as this same person.`,
     ``,
-    `BLENDING: relight the transplanted face to match IMAGE 1's warm directional lantern light; carry the skin tone continuously into the neck and ears so there is no visible seam, edge or tonal break. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
+    `BLENDING: relight the transplanted face to match IMAGE 1's ${scene.light}; carry the skin tone continuously into the neck and ears so there is no visible seam, edge or tonal break. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
     ``,
     `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1. Do not add text, captions, watermarks, borders or additional people. Do not restyle, re-colour or modify the costume or headdress in any way.`,
   ].join("\n");
 }
+
+/** The Iban portraits' wording — the prompt was tuned against these. */
+const DEFAULT_SCENE = {
+  setting: "longhouse setting",
+  lighting: "warm lantern lighting",
+  light: "warm directional lantern light",
+};
 
 export type SwapInput = {
   prompt: string;
