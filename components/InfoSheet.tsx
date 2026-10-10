@@ -8,10 +8,11 @@ export function InfoSheet({
   onClose,
 }: {
   hotspot: Hotspot | null;
-  onClose: () => void;
+  /** Omitted when the sheet is opened from a phone — the kiosk can't be touched. */
+  onClose?: () => void;
 }) {
   useEffect(() => {
-    if (!hotspot) return;
+    if (!hotspot || !onClose) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -25,12 +26,16 @@ export function InfoSheet({
 
   return (
     <div className="absolute inset-0 z-30 flex items-end" role="dialog" aria-modal="true">
-      <button
-        type="button"
-        aria-label="Close"
-        onClick={onClose}
-        className="absolute inset-0 bg-ink/45 animate-fade"
-      />
+      {onClose ? (
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={onClose}
+          className="absolute inset-0 bg-ink/45 animate-fade"
+        />
+      ) : (
+        <div aria-hidden className="absolute inset-0 bg-ink/45 animate-fade" />
+      )}
 
       <div className="animate-fade-up kiosk-reach-bottom relative w-full rounded-t-[2rem] bg-white p-6 shadow-2xl">
         <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-ink/15" aria-hidden />
@@ -54,13 +59,15 @@ export function InfoSheet({
             </p>
           )}
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-6 h-14 w-full rounded-full bg-ink text-lg font-bold text-white transition active:scale-[0.98]"
-          >
-            Got it
-          </button>
+          {onClose ? (
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-6 h-14 w-full rounded-full bg-ink text-lg font-bold text-white transition active:scale-[0.98]"
+            >
+              Got it
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

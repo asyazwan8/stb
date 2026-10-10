@@ -7,19 +7,24 @@ import { QrPanel } from "@/components/QrPanel";
 import type { Ethnic, Look } from "@/lib/ethnics";
 
 /** Kiosks must clear themselves — nobody's portrait should sit on screen. */
-const AUTO_RESET_SECONDS = 90;
-const WARN_AT = 15;
+const AUTO_RESET_SECONDS = 15;
+/** Short enough that the countdown shows the whole time. */
+const WARN_AT = AUTO_RESET_SECONDS;
 
 export function ResultScreen({
   imageUrl,
   ethnic,
   look,
   onRestart,
+  showRestart = true,
 }: {
   imageUrl: string;
   ethnic: Ethnic;
   look: Look;
+  /** Called by the button and by the auto-clear timer. */
   onRestart: () => void;
+  /** Off when the kiosk is driven from a phone and can't be touched. */
+  showRestart?: boolean;
 }) {
   const [remaining, setRemaining] = useState(AUTO_RESET_SECONDS);
 
@@ -79,25 +84,25 @@ export function ResultScreen({
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-stretch">
             <div className="shrink-0 sm:w-52">
-              <QrPanel imageUrl={imageUrl} />
+              <QrPanel path={`/p?src=${encodeURIComponent(imageUrl)}`} />
             </div>
 
             <div className="flex flex-1 flex-col justify-between gap-3">
               <div className="rounded-3xl bg-surface px-5 py-3.5">
                 <p className="text-[0.9375rem] leading-relaxed text-muted">
-                  Scan the code to save your portrait, then come and see the real
-                  thing — the {ethnic.name} welcome visitors to their longhouses
-                  along Sarawak&rsquo;s rivers.
+                  Scan the code to save your portrait, then {ethnic.invite}
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={onRestart}
-                className="h-16 w-full rounded-full bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
-              >
-                Start over
-              </button>
+              {showRestart ? (
+                <button
+                  type="button"
+                  onClick={onRestart}
+                  className="h-16 w-full rounded-full bg-gold text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97]"
+                >
+                  Start over
+                </button>
+              ) : null}
             </div>
           </div>
 

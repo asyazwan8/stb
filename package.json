@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@fal-ai/client": "^1.6.2",
+    "@upstash/redis": "^1.39.0",
     "next": "^15.5.4",
     "qrcode": "^1.5.4",
     "react": "^19.1.0",

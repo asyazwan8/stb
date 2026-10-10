@@ -3,7 +3,7 @@ export function ComingSoonBadge({ className = "" }: { className?: string }) {
     <span
       className={`inline-flex items-center gap-1.5 rounded-full bg-ink/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-white ${className}`}
     >
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <svg width="11" height="11" className="size-[calc(11*var(--px))]" viewBox="0 0 24 24" fill="none" aria-hidden>
         <rect
           x="4"
           y="10"

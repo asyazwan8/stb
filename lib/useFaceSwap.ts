@@ -18,6 +18,15 @@ const TIMEOUT_MS = 180_000;
 /** Roughly how long a Nano Banana Pro edit takes; only drives the progress easing. */
 const EXPECTED_MS = 34_000;
 
+/**
+ * Eases the bar toward 92% over the expected duration so the wait reads as
+ * motion rather than a frozen screen. Completion snaps it to 100.
+ */
+export function easeProgress(elapsedMs: number): number {
+  const eased = 1 - Math.exp(-elapsedMs / (EXPECTED_MS / 2.2));
+  return Math.min(92, 4 + eased * 88);
+}
+
 const INITIAL: SwapState = {
   phase: "idle",
   imageUrl: null,
@@ -56,16 +65,11 @@ export function useFaceSwap() {
       clearTimers();
       setState({ ...INITIAL, phase: "submitting", progress: 4 });
 
-      // Ease the bar toward 92% over the expected duration so the wait reads as
-      // motion rather than a frozen screen. Completion snaps it to 100.
       const started = Date.now();
       const ticker = window.setInterval(() => {
-        const elapsed = Date.now() - started;
-        const eased = 1 - Math.exp(-elapsed / (EXPECTED_MS / 2.2));
+        const progress = easeProgress(Date.now() - started);
         setState((s) =>
-          s.phase === "done" || s.phase === "error"
-            ? s
-            : { ...s, progress: Math.min(92, 4 + eased * 88) },
+          s.phase === "done" || s.phase === "error" ? s : { ...s, progress },
         );
       }, 220);
       timers.current.push(ticker);

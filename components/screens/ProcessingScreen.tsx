@@ -21,10 +21,14 @@ export function ProcessingScreen({
   state,
   onCancel,
   onRetry,
+  errorHint,
 }: {
   state: SwapState;
-  onCancel: () => void;
-  onRetry: () => void;
+  /** Omitted when the kiosk is driven from a phone and can't be touched. */
+  onCancel?: () => void;
+  onRetry?: () => void;
+  /** Shown under the error in place of the buttons, e.g. "Try again on your phone". */
+  errorHint?: string;
 }) {
   const [index, setIndex] = useState(0);
   const [statusIndex, setStatusIndex] = useState(0);
@@ -58,22 +62,33 @@ export function ProcessingScreen({
           <p className="mt-3 max-w-md text-[1.0625rem] leading-relaxed text-muted">
             {state.error}
           </p>
-          <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
-            <button
-              type="button"
-              onClick={onRetry}
-              className="h-16 rounded-full bg-gold text-lg font-bold text-ink transition active:scale-[0.97] active:bg-gold-deep"
-            >
-              Try again
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="h-16 rounded-full border border-ink/20 text-lg font-semibold text-ink transition active:scale-[0.97] active:bg-surface"
-            >
-              Start over
-            </button>
-          </div>
+          {onRetry || onCancel ? (
+            <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
+              {onRetry ? (
+                <button
+                  type="button"
+                  onClick={onRetry}
+                  className="h-16 rounded-full bg-gold text-lg font-bold text-ink transition active:scale-[0.97] active:bg-gold-deep"
+                >
+                  Try again
+                </button>
+              ) : null}
+              {onCancel ? (
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="h-16 rounded-full border border-ink/20 text-lg font-semibold text-ink transition active:scale-[0.97] active:bg-surface"
+                >
+                  Start over
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+          {errorHint ? (
+            <p className="mt-8 rounded-full bg-surface px-6 py-3 text-lg font-semibold text-ink">
+              {errorHint}
+            </p>
+          ) : null}
         </main>
       </div>
     );
@@ -182,13 +197,15 @@ export function ProcessingScreen({
             <p className="text-xs text-muted">
               Creating your portrait — this takes under a minute.
             </p>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-muted underline underline-offset-4"
-            >
-              Cancel
-            </button>
+            {onCancel ? (
+              <button
+                type="button"
+                onClick={onCancel}
+                className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-muted underline underline-offset-4"
+              >
+                Cancel
+              </button>
+            ) : null}
           </div>
         </div>
       </main>

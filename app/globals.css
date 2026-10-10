@@ -39,6 +39,7 @@
    ------------------------------------------------------------------ */
 :root {
   --kiosk-divisor: 43;
+  --px: 1px;
   --stage-w: min(100vw, calc(100dvh * 9 / 16));
 }
 
@@ -47,7 +48,20 @@
  * The download page (/p) is viewed on a phone and keeps a normal 16px base.
  */
 html:has(.kiosk-stage) {
-  font-size: clamp(10px, calc(var(--stage-w) / var(--kiosk-divisor)), 34px);
+  font-size: clamp(10px, calc(var(--stage-w) / var(--kiosk-divisor)), 64px);
+  /* A design pixel: 1px at the 1080-wide baseline (and anywhere smaller),
+     growing with the stage beyond it. Icons sized in px use this, so a 4K
+     portrait TV at 100% scaling draws them at the same proportion as 1080p. */
+  --px: max(1px, calc(1rem / 25.116));
+}
+
+/*
+ * The phone half of /demo-qr reuses the kiosk's own components, which were
+ * laid out for a stage about 43rem wide. A phone is far narrower, so it gets
+ * its own scale: roughly 26rem across, capped so a tablet doesn't balloon.
+ */
+html:has(.phone-stage) {
+  font-size: clamp(13px, calc(100vw / 26), 18px);
 }
 
 html,
@@ -79,6 +93,11 @@ button,
    floor-standing panel. */
 .kiosk-reach-bottom {
   padding-bottom: max(env(safe-area-inset-bottom), calc(100dvh * 0.07));
+}
+
+/* A phone in the hand has no unreachable band — only the home indicator. */
+.phone-stage .kiosk-reach-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
 }
 
 /* ------------------------------------------------------------------

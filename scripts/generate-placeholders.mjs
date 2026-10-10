@@ -195,6 +195,30 @@ async function main() {
     .jpeg({ quality: 72, mozjpeg: true })
     .toFile(new URL("references/iban-male.jpg", OUT).pathname);
 
+  // The other live groups' portraits share one 768x1376 frame.
+  for (const [base, subtitle] of [
+    ["bidayuh-female", "Bidayuh — women's dress (female)"],
+    ["bidayuh-male", "Bidayuh — warrior's dress (male)"],
+    ["orangulu-female", "Orang Ulu — Kenyah dancer (female)"],
+    ["orangulu-male", "Orang Ulu — Kenyah warrior (male)"],
+  ]) {
+    if (!(await missingReference(base))) continue;
+    await sharp(
+      svg(
+        referenceSvg({
+          w: 768,
+          h: 1376,
+          title: "PLACEHOLDER",
+          subtitle,
+          filename: `public/references/${base}.png`,
+        }),
+      ),
+    )
+      .resize({ width: 512 })
+      .png({ palette: true, colors: 16, compressionLevel: 9 })
+      .toFile(new URL(`references/${base}.png`, OUT).pathname);
+  }
+
   for (const place of PLACES) {
     // Keyed off the real path, so a photo whose filename differs from its id
     // still counts as present.

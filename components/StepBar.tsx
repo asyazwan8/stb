@@ -27,7 +27,7 @@ export function StepBar({
             onClick={onBack}
             className="flex h-16 min-w-32 items-center justify-center gap-2 rounded-full border border-ink/20 px-6 text-lg font-semibold text-muted transition active:scale-[0.97] active:bg-surface"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="18" height="18" className="size-[calc(18*var(--px))]" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path
                 d="M15 18l-6-6 6-6"
                 stroke="currentColor"
@@ -56,7 +56,7 @@ export function StepBar({
             className="flex h-16 min-w-40 items-center justify-center gap-2 rounded-full bg-gold px-8 text-lg font-bold text-white shadow-lg shadow-black/10 transition active:scale-[0.97] disabled:cursor-not-allowed disabled:bg-ink/20 disabled:text-muted disabled:shadow-none"
           >
             {nextLabel}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="18" height="18" className="size-[calc(18*var(--px))]" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path
                 d="M9 18l6-6-6-6"
                 stroke="currentColor"

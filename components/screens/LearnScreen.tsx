@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useState, type MouseEvent } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { Masthead } from "@/components/Masthead";
 import { StepBar } from "@/components/StepBar";
 import { Hotspot } from "@/components/Hotspot";
@@ -14,6 +14,9 @@ export function LearnScreen({
   onBack,
   onNext,
   calibrate = false,
+  openHotspotId,
+  hint = "Tap a circle on the photo to learn what it means.",
+  footer,
 }: {
   ethnic: Ethnic;
   look: Look;
@@ -21,8 +24,23 @@ export function LearnScreen({
   onNext: () => void;
   /** ?calibrate=1 — tap the photo to read coordinates after swapping assets. */
   calibrate?: boolean;
+  /**
+   * When set (even to null), the open detail is controlled from outside — the
+   * phone-controlled kiosk opens whatever the visitor picked on their phone.
+   */
+  openHotspotId?: string | null;
+  hint?: string;
+  /** Replaces the Back/Next bar. */
+  footer?: ReactNode;
 }) {
-  const [open, setOpen] = useState<HotspotData | null>(null);
+  const [ownOpen, setOwnOpen] = useState<HotspotData | null>(null);
+  const controlled = openHotspotId !== undefined;
+  const open = controlled
+    ? (look.hotspots.find((h) => h.id === openHotspotId) ?? null)
+    : ownOpen;
+  const setOpen = (hotspot: HotspotData | null) => {
+    if (!controlled) setOwnOpen(hotspot);
+  };
   const [probe, setProbe] = useState<{ x: number; y: number } | null>(null);
 
   const handleProbe = (e: MouseEvent<HTMLDivElement>) => {
@@ -90,15 +108,15 @@ export function LearnScreen({
               <span className="h-2 w-2 rounded-full bg-gold" />
             </span>
             <p className="text-[0.9375rem] font-medium leading-snug text-muted">
-              Tap a circle on the photo to learn what it means.
+              {hint}
             </p>
           </div>
         </div>
       </main>
 
-      <InfoSheet hotspot={open} onClose={() => setOpen(null)} />
+      <InfoSheet hotspot={open} onClose={controlled ? undefined : () => setOpen(null)} />
 
-      <StepBar onBack={onBack} onNext={onNext} nextLabel="Take photo" />
+      {footer ?? <StepBar onBack={onBack} onNext={onNext} nextLabel="Take photo" />}
     </div>
   );
 }
