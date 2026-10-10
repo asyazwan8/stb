@@ -66,15 +66,38 @@ export async function loadReferenceDataUri(look: Look): Promise<string> {
  * Two explicit preserve-lists. Stating both sides stops the model from trading
  * one requirement for the other — the common failure mode here is a beautiful
  * costume wearing a generic face, or an accurate face in a restyled outfit.
+ *
+ * v2 (the default) adds one rule: the visitor's skin tone goes on ALL visible
+ * skin, not just the face. v1 kept the reference model's arms and hands
+ * "completely unchanged", so a visitor darker or lighter than the model got
+ * either a two-tone composite or a face quietly re-toned to match the body.
+ * v2 is otherwise a minimal edit of v1: two earlier rewrites made results
+ * worse and were reverted (2dbac01), so the known-good structure stays.
+ *
+ * FAL_PROMPT=v1 restores the previous prompt verbatim, without a code change.
  */
+export const PROMPT_VERSION = process.env.FAL_PROMPT === "v1" ? "v1" : "v2";
+
 export function buildSwapPrompt(opts: {
   ethnicName: string;
   look: Look;
+  version?: "v1" | "v2";
 }): string {
-  const { ethnicName, look } = opts;
+  const version = opts.version ?? PROMPT_VERSION;
+  return version === "v1" ? buildSwapPromptV1(opts) : buildSwapPromptV2(opts);
+}
+
+function promptParts(look: Look) {
   const headgear =
     look.hotspots.find((h) => h.label === "Headgear")?.name ?? "headdress";
   const scene = look.scene ?? DEFAULT_SCENE;
+  return { headgear, scene };
+}
+
+/** The known-good prompt, kept byte-for-byte. */
+function buildSwapPromptV1(opts: { ethnicName: string; look: Look }): string {
+  const { ethnicName, look } = opts;
+  const { headgear, scene } = promptParts(look);
 
   return [
     `You are compositing one photorealistic portrait from two photographs.`,
@@ -89,6 +112,30 @@ export function buildSwapPrompt(opts: {
     `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the exact face shape and proportions, eye shape and spacing, eyebrows, nose, mouth and lips, cheekbones, jawline and chin, skin tone and complexion, skin texture, and any facial hair. The finished portrait must be immediately recognisable as this same person.`,
     ``,
     `BLENDING: relight the transplanted face to match IMAGE 1's ${scene.light}; carry the skin tone continuously into the neck and ears so there is no visible seam, edge or tonal break. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
+    ``,
+    `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1. Do not add text, captions, watermarks, borders or additional people. Do not restyle, re-colour or modify the costume or headdress in any way.`,
+  ].join("\n");
+}
+
+function buildSwapPromptV2(opts: { ethnicName: string; look: Look }): string {
+  const { ethnicName, look } = opts;
+  const { headgear, scene } = promptParts(look);
+
+  return [
+    `You are compositing one photorealistic portrait from two photographs.`,
+    ``,
+    `IMAGE 1 is a traditional ${ethnicName} portrait from Sarawak, Borneo (${look.name}).`,
+    `IMAGE 2 is a photograph of a visitor's face taken at a kiosk.`,
+    ``,
+    `TASK: replace only the face of the person in IMAGE 1 with the face of the person in IMAGE 2.`,
+    ``,
+    `PRESERVE FROM IMAGE 1, completely unchanged: the pose, body position and body shape; the position of the arms, hands and fingers; the entire traditional costume including the ${headgear} headdress, all beadwork, silverwork, coins, fringing and handwoven textile; the ${scene.setting} and every background detail; the camera angle, crop and framing; the depth of field; and the ${scene.lighting} and colour grade.`,
+    ``,
+    `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the face shape and proportions, eye shape and spacing, eyebrows, nose, mouth and lips, cheekbones, jawline and chin, skin tone and complexion, skin texture, and any facial hair. The finished portrait must be immediately recognisable as this same person.`,
+    ``,
+    `SKIN TONE: give every visible area of skin — face, neck, ears, shoulders, arms, hands, legs and feet — the skin tone and undertone of the person in IMAGE 2, so the whole figure is one consistent complexion. Do not lighten, darken or warm their skin toward the model in IMAGE 1. IMAGE 1's light may add its highlights and shadows, but the underlying colour stays the visitor's own.`,
+    ``,
+    `BLENDING: relight the transplanted face with IMAGE 1's ${scene.light} (its light and shadow only, not its skin colour); carry the skin tone continuously into the neck, ears and all other visible skin so there is no visible seam, edge or tonal break. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
     ``,
     `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1. Do not add text, captions, watermarks, borders or additional people. Do not restyle, re-colour or modify the costume or headdress in any way.`,
   ].join("\n");
