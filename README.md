@@ -91,7 +91,7 @@ and the kiosk never needs a touch, so it also works on a plain display.
 3. The selfie is taken with the phone's camera.
 4. The portrait appears on the kiosk with the usual download QR, which opens
    the same `/p` page. The phone's **I'm done** button clears the kiosk straight
-   away; otherwise it clears itself after 90 seconds as usual.
+   away; otherwise it clears itself after 15 seconds as usual.
 
 The first phone to scan a code owns that session; anyone else who scans it is
 told the screen is in use. A phone that goes quiet for four minutes frees the
@@ -236,7 +236,7 @@ html:has(.kiosk-stage) {
 ## Notes for the demo
 
 - Every screen fits without scrolling at 1080×1920.
-- The result screen clears itself after 90 seconds.
+- The result screen clears itself after 15 seconds and returns to the start screen.
 - Visitor photos are sent once to fal to create the portrait and are not stored
   by this app.
 - **The cultural copy in `lib/ethnics.ts` should be reviewed by STB or a cultural

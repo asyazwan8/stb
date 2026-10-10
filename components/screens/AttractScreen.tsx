@@ -58,8 +58,8 @@ export function AttractScreen({
 
       <div className="kiosk-no-select kiosk-reach-bottom relative shrink-0 px-8">
         <p className="text-center text-xs leading-relaxed text-muted">
-          A demonstration for the Sarawak Tourism Board. Photos are used only to
-          create your portrait and are not stored by this kiosk.
+          Generate a photo likeness of you in traditional Sarawak dress. Your
+          photo is used only to create it and is not stored by this kiosk.
         </p>
       </div>
     </div>

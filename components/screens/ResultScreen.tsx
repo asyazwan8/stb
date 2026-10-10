@@ -7,8 +7,9 @@ import { QrPanel } from "@/components/QrPanel";
 import type { Ethnic, Look } from "@/lib/ethnics";
 
 /** Kiosks must clear themselves — nobody's portrait should sit on screen. */
-const AUTO_RESET_SECONDS = 90;
-const WARN_AT = 15;
+const AUTO_RESET_SECONDS = 15;
+/** Short enough that the countdown shows the whole time. */
+const WARN_AT = AUTO_RESET_SECONDS;
 
 export function ResultScreen({
   imageUrl,
