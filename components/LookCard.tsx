@@ -32,7 +32,7 @@ export function LookCard({
         />
         {selected ? (
           <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-gold text-ink shadow-lg">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="16" height="16" className="size-[calc(16*var(--px))]" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path
                 d="M5 12l5 5L19 7"
                 stroke="currentColor"

@@ -221,6 +221,10 @@ html:has(.kiosk-stage) {
 
 - **`--kiosk-divisor` is the knob** — smaller means a bigger UI. At 1080 wide it
   lands a ~25px root, sized for viewing from about a metre.
+- **4K portrait TVs work at 100% scaling.** The root size is capped at 64px, so a
+  2160-wide panel gets exactly double the 1080 layout. Icons are sized in
+  `var(--px)`, a design pixel that grows with the stage the same way. 200% OS
+  scaling also works and looks identical.
 - On any screen that isn't 9:16 the app **letterboxes** to an exact 9:16 column
   against a dark surround, so a laptop preview shows what the real kiosk looks
   like. On a phone the cap never binds and it fills the screen.

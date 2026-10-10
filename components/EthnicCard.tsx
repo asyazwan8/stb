@@ -54,7 +54,7 @@ export function EthnicCard({
             }`}
             aria-hidden
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <svg width="16" height="16" className="size-[calc(16*var(--px))]" viewBox="0 0 24 24" fill="none">
               <path
                 d="M5 12l5 5L19 7"
                 stroke="currentColor"

@@ -29,12 +29,12 @@ export function ChoiceFeedback({
         } ${lg ? "h-12 w-12" : "h-9 w-9"}`}
       >
         {soon ? (
-          <svg width={lg ? 20 : 15} height={lg ? 20 : 15} viewBox="0 0 24 24" fill="none">
+          <svg width={lg ? 20 : 15} height={lg ? 20 : 15} className={lg ? "size-[calc(20*var(--px))]" : "size-[calc(15*var(--px))]"} viewBox="0 0 24 24" fill="none">
             <rect x="4" y="10" width="16" height="11" rx="2" stroke="currentColor" strokeWidth="2.5" />
             <path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
           </svg>
         ) : (
-          <svg width={lg ? 22 : 16} height={lg ? 22 : 16} viewBox="0 0 24 24" fill="none">
+          <svg width={lg ? 22 : 16} height={lg ? 22 : 16} className={lg ? "size-[calc(22*var(--px))]" : "size-[calc(16*var(--px))]"} viewBox="0 0 24 24" fill="none">
             <path
               d="M5 12l5 5L19 7"
               stroke="currentColor"
