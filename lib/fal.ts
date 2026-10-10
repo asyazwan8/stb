@@ -159,6 +159,13 @@ function buildSwapPromptV2(opts: { ethnicName: string; look: Look }): string {
 function buildSwapPromptV3(opts: { ethnicName: string; look: Look }): string {
   const { ethnicName, look } = opts;
   const { headgear, scene } = promptParts(look);
+  // Anyone may pick either look. The warrior looks leave the chest and midriff
+  // bare, and v3 gives the visitor their own build, so a woman choosing one
+  // must stay covered on a public screen. Female looks are unaffected.
+  const modesty =
+    look.gender === "male"
+      ? " The one exception: if the person in IMAGE 2 is a woman, extend the costume in its own material so that her chest and midriff are covered."
+      : "";
 
   return [
     `You are creating one photorealistic portrait from two photographs.`,
@@ -174,9 +181,9 @@ function buildSwapPromptV3(opts: { ethnicName: string; look: Look }): string {
     ``,
     `SKIN TONE: give every visible area of skin — face, neck, ears, shoulders, arms, hands, legs and feet — the skin tone and undertone of the person in IMAGE 2, so the whole figure is one consistent complexion. Do not lighten, darken or shift the undertone of their skin toward the model in IMAGE 1. IMAGE 1's light may add its highlights and shadows, but the underlying colour stays the visitor's own.`,
     ``,
-    `ONE PERSON, ONE PHOTOGRAPH: light the face, neck and body together with IMAGE 1's ${scene.light}, with the same direction, softness, shadows, film grain and sharpness as the rest of the picture, so nothing looks pasted, cut out or retouched. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
+    `ONE PERSON, ONE PHOTOGRAPH: light the face, neck and body together with IMAGE 1's ${scene.light}, with the same direction, softness, shadows, film grain and sharpness as the rest of the picture, so nothing looks pasted, cut out or retouched. Keep the head at the same size, tilt and angle as in IMAGE 1, with the eyes open. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
     ``,
-    `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1. Do not add text, captions, watermarks, borders or additional people, and do not copy any watermark or logo that appears in IMAGE 1. Do not restyle, re-colour or modify the costume or headdress in any way.`,
+    `OUTPUT: exactly one photorealistic image with a single subject, sharp and naturally detailed, in the same composition as IMAGE 1. Do not add text, captions, watermarks, borders or additional people, and do not copy any watermark or logo that appears in IMAGE 1. Do not restyle, re-colour or modify the costume or headdress in any way.${modesty}`,
   ].join("\n");
 }
 
