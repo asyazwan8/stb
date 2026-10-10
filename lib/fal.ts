@@ -71,8 +71,8 @@ export async function loadReferenceDataUri(look: Look): Promise<string> {
  * skin, not just the face. v1 kept the reference model's arms and hands
  * "completely unchanged", so a visitor darker or lighter than the model got
  * either a two-tone composite or a face quietly re-toned to match the body.
- * v2 is otherwise a minimal edit of v1: two earlier rewrites made results
- * worse and were reverted (2dbac01), so the known-good structure stays.
+ * v2 is otherwise v1 word for word — two earlier rewrites made results worse
+ * and were reverted (2dbac01) — so a live test isolates the skin-tone change.
  *
  * FAL_PROMPT=v1 restores the previous prompt verbatim, without a code change.
  */
@@ -131,9 +131,9 @@ function buildSwapPromptV2(opts: { ethnicName: string; look: Look }): string {
     ``,
     `PRESERVE FROM IMAGE 1, completely unchanged: the pose, body position and body shape; the position of the arms, hands and fingers; the entire traditional costume including the ${headgear} headdress, all beadwork, silverwork, coins, fringing and handwoven textile; the ${scene.setting} and every background detail; the camera angle, crop and framing; the depth of field; and the ${scene.lighting} and colour grade.`,
     ``,
-    `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the face shape and proportions, eye shape and spacing, eyebrows, nose, mouth and lips, cheekbones, jawline and chin, skin tone and complexion, skin texture, and any facial hair. The finished portrait must be immediately recognisable as this same person.`,
+    `PRESERVE FROM IMAGE 2, faithfully: the person's facial identity. Keep the exact face shape and proportions, eye shape and spacing, eyebrows, nose, mouth and lips, cheekbones, jawline and chin, skin tone and complexion, skin texture, and any facial hair. The finished portrait must be immediately recognisable as this same person.`,
     ``,
-    `SKIN TONE: give every visible area of skin — face, neck, ears, shoulders, arms, hands, legs and feet — the skin tone and undertone of the person in IMAGE 2, so the whole figure is one consistent complexion. Do not lighten, darken or warm their skin toward the model in IMAGE 1. IMAGE 1's light may add its highlights and shadows, but the underlying colour stays the visitor's own.`,
+    `SKIN TONE: give every visible area of skin — face, neck, ears, shoulders, arms, hands, legs and feet — the skin tone and undertone of the person in IMAGE 2, so the whole figure is one consistent complexion. Do not lighten, darken or shift the undertone of their skin toward the model in IMAGE 1. IMAGE 1's light may add its highlights and shadows, but the underlying colour stays the visitor's own.`,
     ``,
     `BLENDING: relight the transplanted face with IMAGE 1's ${scene.light} (its light and shadow only, not its skin colour); carry the skin tone continuously into the neck, ears and all other visible skin so there is no visible seam, edge or tonal break. Keep the head at the same size, tilt and angle as in IMAGE 1. A natural, friendly expression suited to the pose is fine, but the facial identity must not drift.`,
     ``,
