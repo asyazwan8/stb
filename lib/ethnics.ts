@@ -250,7 +250,7 @@ export const ETHNICS: Ethnic[] = [
         name: "Bidayuh Warrior's Dress",
         label: "Male",
         image: "/references/bidayuh-male.png",
-        aspect: { w: 768, h: 1376 },
+        aspect: { w: 1152, h: 2048 },
         falAspectRatio: "3:4",
         scene: {
           setting: "dim timber interior setting",
@@ -265,7 +265,7 @@ export const ETHNICS: Ethnic[] = [
             description:
               "A striped headcloth wound around the head and crowned with curved tusks. Worn for ceremonies and dances that remember the Bidayuh as warriors of the hills.",
             x: 52,
-            y: 25,
+            y: 29,
             status: "live",
           },
           {
@@ -275,7 +275,7 @@ export const ETHNICS: Ethnic[] = [
             description:
               "A heavy collar of boar tusks, animal teeth and beads. Wild boar was the prize of the hunt, and wearing its tusks spoke of a man's courage and skill in the forest.",
             x: 52,
-            y: 43,
+            y: 44,
             status: "live",
           },
           {
@@ -285,7 +285,7 @@ export const ETHNICS: Ethnic[] = [
             description:
               "A sleeveless vest of hide or beaten bark, edged with red and white trim. Bark cloth was once made by soaking and pounding the inner bark of forest trees until it was soft enough to wear.",
             x: 38,
-            y: 52,
+            y: 50,
             status: "live",
           },
           {
@@ -294,8 +294,8 @@ export const ETHNICS: Ethnic[] = [
             name: "Loincloth",
             description:
               "A long cloth wound around the waist, one end falling in front and the other behind, here finished with a decorated apron. It is the oldest and simplest part of the warrior's dress.",
-            x: 60,
-            y: 77,
+            x: 58,
+            y: 75,
             status: "live",
           },
         ],
@@ -366,7 +366,7 @@ export const ETHNICS: Ethnic[] = [
         name: "Kenyah Warrior's Dress",
         label: "Male",
         image: "/references/orangulu-male.png",
-        aspect: { w: 768, h: 1376 },
+        aspect: { w: 1440, h: 2560 },
         falAspectRatio: "3:4",
         scene: {
           setting: "dark stage setting with red drapes",
@@ -380,7 +380,7 @@ export const ETHNICS: Ethnic[] = [
             name: "Tapung Puk",
             description:
               "A close-fitting rattan war cap crowned with long hornbill tail feathers. Traditionally only a man who had proved himself in battle could wear the feathers, so the cap showed his courage at a glance.",
-            x: 52,
+            x: 55,
             y: 27,
             status: "live",
           },
@@ -390,8 +390,8 @@ export const ETHNICS: Ethnic[] = [
             name: "Besunung",
             description:
               "An outer garment of goat or deer skin worn over the shoulders, often with fur left on. Worn with the abet loincloth for the warrior's dance.",
-            x: 62,
-            y: 42,
+            x: 70,
+            y: 43,
             status: "live",
           },
           {
@@ -400,8 +400,8 @@ export const ETHNICS: Ethnic[] = [
             name: "Parang Ilang",
             description:
               "The sword the Kayan and Kenyah are famous for forging, with a carved antler hilt and a rattan-bound scabbard. Ilang from the upriver smiths were traded right across Borneo.",
-            x: 62,
-            y: 60,
+            x: 75,
+            y: 61,
             status: "live",
           },
           {
@@ -410,8 +410,8 @@ export const ETHNICS: Ethnic[] = [
             name: "War shield",
             description:
               "A long wooden shield painted with the bold, curling faces and tendrils of Orang Ulu art. The designs were meant to protect the warrior and frighten his enemy.",
-            x: 68,
-            y: 80,
+            x: 66,
+            y: 79,
             status: "live",
           },
         ],
