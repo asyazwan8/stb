@@ -64,7 +64,7 @@ const IBAN_DESCRIPTION =
 
 // Drafted for STB review — see the note at the top of this file.
 const BIDAYUH_DESCRIPTION =
-  "The Bidayuh are the people of the hills south and west of Kuching, around Bau, Padawan and Serian. Their villages once gathered around the baruk, a round head-house raised on stilts. For Gawai, women wear the black jomuh skirt with beaded sashes, coin belts and the sipiah cap, and men the black vest and loincloth of the warrior.";
+  "The Bidayuh are the people of the hills south and west of Kuching, around Bau, Padawan and Serian. Their villages once gathered around the baruk, a round head-house raised on stilts. For Gawai, women wear the black jomuh skirt with beaded sashes, copper belts and the sipiah cap, and men the black vest and loincloth of the warrior.";
 
 const ORANG_ULU_DESCRIPTION =
   "Orang Ulu means \"upriver people\" — the Kayan, Kenyah, Kelabit, Penan and other communities of Sarawak's far interior. They are Borneo's great bead-workers and carvers: their beaded caps, jackets and baby carriers carry hornbill and tiger motifs that once marked a family's rank, and their longhouse walls are painted with sweeping tendrils.";
@@ -188,8 +188,119 @@ export const ETHNICS: Ethnic[] = [
     description: BIDAYUH_DESCRIPTION,
     invite:
       "come and see the real thing — Bidayuh villages in the hills near Kuching welcome visitors at Gawai.",
-    status: "coming-soon",
-    looks: [],
+    status: "live",
+    looks: [
+      {
+        gender: "female",
+        name: "Bidayuh Women's Dress",
+        label: "Female",
+        image: "/references/bidayuh-female.png",
+        aspect: { w: 768, h: 1376 },
+        falAspectRatio: "3:4",
+        scene: {
+          setting: "timber house setting",
+          lighting: "warm golden lighting",
+          light: "warm golden directional light",
+        },
+        hotspots: [
+          {
+            id: "sipiah",
+            label: "Headgear",
+            name: "Sipiah",
+            description:
+              "A snug cap ringed with bands of tiny glass beads, worn with the ceremonial dress for Gawai. Its colours and patterns differ from village to village, so a practised eye can tell where the wearer comes from.",
+            x: 58,
+            y: 26,
+            status: "live",
+          },
+          {
+            id: "bidayuh-sash",
+            label: "Sash",
+            name: "Beaded sash & necklace",
+            description:
+              "Strings of red, white, yellow and black beads crossed over the shoulders and chest. Beads were once traded upriver and held as family wealth, so a full sash was a sign of standing as much as of beauty.",
+            x: 58,
+            y: 44,
+            status: "live",
+          },
+          {
+            id: "bidayuh-belt",
+            label: "Belt",
+            name: "Copper belt",
+            description:
+              "A belt of linked metal rings or coins at the waist, worn over the jomuh. It catches the light and chimes softly as the wearer dances.",
+            x: 56,
+            y: 54,
+            status: "live",
+          },
+          {
+            id: "jomuh",
+            label: "Skirt",
+            name: "Jomuh",
+            description:
+              "The black skirt of the Bidayuh women's dress, edged with bands of white zigzag stitching and beadwork. Black is the ground colour of Bidayuh ceremonial wear, so the trim stands out sharply against it.",
+            x: 62,
+            y: 67,
+            status: "live",
+          },
+        ],
+      },
+      {
+        gender: "male",
+        name: "Bidayuh Warrior's Dress",
+        label: "Male",
+        image: "/references/bidayuh-male.png",
+        aspect: { w: 768, h: 1376 },
+        falAspectRatio: "3:4",
+        scene: {
+          setting: "dim timber interior setting",
+          lighting: "warm low lighting",
+          light: "warm low directional light",
+        },
+        hotspots: [
+          {
+            id: "bidayuh-headcloth",
+            label: "Headgear",
+            name: "Warrior's headcloth",
+            description:
+              "A striped headcloth wound around the head and crowned with curved tusks. Worn for ceremonies and dances that remember the Bidayuh as warriors of the hills.",
+            x: 52,
+            y: 25,
+            status: "live",
+          },
+          {
+            id: "bidayuh-necklace",
+            label: "Necklace",
+            name: "Boar-tooth necklace",
+            description:
+              "A heavy collar of boar tusks, animal teeth and beads. Wild boar was the prize of the hunt, and wearing its tusks spoke of a man's courage and skill in the forest.",
+            x: 52,
+            y: 43,
+            status: "live",
+          },
+          {
+            id: "bidayuh-vest",
+            label: "Vest",
+            name: "Warrior's vest",
+            description:
+              "A sleeveless vest of hide or beaten bark, edged with red and white trim. Bark cloth was once made by soaking and pounding the inner bark of forest trees until it was soft enough to wear.",
+            x: 38,
+            y: 52,
+            status: "live",
+          },
+          {
+            id: "bidayuh-loincloth",
+            label: "Loincloth",
+            name: "Loincloth",
+            description:
+              "A long cloth wound around the waist, one end falling in front and the other behind, here finished with a decorated apron. It is the oldest and simplest part of the warrior's dress.",
+            x: 60,
+            y: 77,
+            status: "live",
+          },
+        ],
+      },
+    ],
   },
   {
     id: "orang-ulu",
@@ -198,8 +309,114 @@ export const ETHNICS: Ethnic[] = [
     description: ORANG_ULU_DESCRIPTION,
     invite:
       "come and see the real thing — the Orang Ulu welcome visitors to their longhouses deep in Sarawak’s interior.",
-    status: "coming-soon",
-    looks: [],
+    status: "live",
+    looks: [
+      {
+        gender: "female",
+        name: "Kenyah Dancer's Dress",
+        label: "Female",
+        image: "/references/orangulu-female.png",
+        aspect: { w: 768, h: 1376 },
+        falAspectRatio: "3:4",
+        hotspots: [
+          {
+            id: "ou-headdress",
+            label: "Headgear",
+            name: "Hornbill-feather crown",
+            description:
+              "A beaded headband crowned with black-and-white hornbill feathers and pom-poms. The hornbill is the most honoured bird of the Orang Ulu, and its feathers were reserved for people of rank.",
+            x: 46,
+            y: 20,
+            status: "live",
+          },
+          {
+            id: "ou-necklace",
+            label: "Necklace",
+            name: "Bead necklace",
+            description:
+              "Old glass beads were the treasure of Orang Ulu families, handed down for generations. Each bead's colour and pattern carried meaning, and a fine strand was among the most valuable things a family owned.",
+            x: 47,
+            y: 35,
+            status: "live",
+          },
+          {
+            id: "ou-dress",
+            label: "Dress",
+            name: "Beaded motif dress",
+            description:
+              "Black cloth covered in curling yellow and white motifs — the same sweeping tendrils painted on Orang Ulu longhouse walls. Motifs such as the hornbill and the human figure were once kept for the aristocratic class.",
+            x: 53,
+            y: 57,
+            status: "live",
+          },
+          {
+            id: "kirip",
+            label: "Fans",
+            name: "Kirip",
+            description:
+              "Hornbill-feather fans held between the fingers in the Datun Julud, the Kenyah women's long dance. The dancer moves like a hornbill gliding in flight while her head stays still. Today most kirip are made with artificial feathers to protect the bird.",
+            x: 30,
+            y: 53,
+            status: "live",
+          },
+        ],
+      },
+      {
+        gender: "male",
+        name: "Kenyah Warrior's Dress",
+        label: "Male",
+        image: "/references/orangulu-male.png",
+        aspect: { w: 768, h: 1376 },
+        falAspectRatio: "3:4",
+        scene: {
+          setting: "dark stage setting with red drapes",
+          lighting: "warm stage lighting",
+          light: "warm directional stage light",
+        },
+        hotspots: [
+          {
+            id: "tapung-puk",
+            label: "Headgear",
+            name: "Tapung Puk",
+            description:
+              "A close-fitting rattan war cap crowned with long hornbill tail feathers. Traditionally only a man who had proved himself in battle could wear the feathers, so the cap showed his courage at a glance.",
+            x: 52,
+            y: 27,
+            status: "live",
+          },
+          {
+            id: "besunung",
+            label: "Cape",
+            name: "Besunung",
+            description:
+              "An outer garment of goat or deer skin worn over the shoulders, often with fur left on. Worn with the abet loincloth for the warrior's dance.",
+            x: 62,
+            y: 42,
+            status: "live",
+          },
+          {
+            id: "ou-ilang",
+            label: "Blade",
+            name: "Parang Ilang",
+            description:
+              "The sword the Kayan and Kenyah are famous for forging, with a carved antler hilt and a rattan-bound scabbard. Ilang from the upriver smiths were traded right across Borneo.",
+            x: 62,
+            y: 60,
+            status: "live",
+          },
+          {
+            id: "ou-shield",
+            label: "Shield",
+            name: "War shield",
+            description:
+              "A long wooden shield painted with the bold, curling faces and tendrils of Orang Ulu art. The designs were meant to protect the warrior and frighten his enemy.",
+            x: 68,
+            y: 80,
+            status: "live",
+          },
+        ],
+      },
+    ],
   },
   {
     id: "melanau",

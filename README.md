@@ -6,8 +6,9 @@ learns what the traditional dress means, takes a photo, and gets their face
 composited into an authentic reference portrait — then scans a QR code to take
 it home.
 
-Built as a pitch demo, so parts are deliberately marked **Coming soon**: three of
-the four ethnic groups, and every costume hotspot except the headgear.
+Built as a pitch demo. Three ethnic groups are live — Iban, Bidayuh and Orang
+Ulu, each with a female and a male look and every costume detail written up —
+and Melanau is deliberately marked **Coming soon**.
 
 ---
 
@@ -23,6 +24,10 @@ push; Vercel redeploys automatically.
 | `app/icon.png` | Optional — the browser-tab mark (square PNG) |
 | `public/references/iban-female.*` | The Iban *Ngepan Indu* reference portrait (portrait orientation) |
 | `public/references/iban-male.*` | The Iban *Ngepan Lelaki* reference portrait (portrait orientation) |
+| `public/references/bidayuh-female.png` | Bidayuh women's dress reference portrait |
+| `public/references/bidayuh-male.png` | Bidayuh warrior's dress reference portrait |
+| `public/references/orangulu-female.png` | Orang Ulu (Kenyah) dancer reference portrait |
+| `public/references/orangulu-male.png` | Orang Ulu (Kenyah) warrior reference portrait |
 
 `.jpg`, `.png` and `.webp` all work for the references — update the `image` path
 in `lib/ethnics.ts` to match the extension you upload, and set `aspect` to the
