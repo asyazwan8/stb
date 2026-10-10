@@ -71,7 +71,7 @@ Two things may need a nudge in `lib/ethnics.ts`:
 | --- | --- | --- |
 | `FAL_KEY` | **yes** | fal.ai API key. Without it the kiosk shows a clear "not configured" message instead of crashing. |
 | `FAL_MODEL` | no | Defaults to `fal-ai/nano-banana-pro/edit`. Set to `fal-ai/nano-banana-2/edit` for a faster but less identity-faithful swap. |
-| `FAL_PROMPT` | no | Leave unset for the current face-swap prompt, which carries the visitor's skin tone onto all visible skin. Set to `v1` to restore the previous prompt exactly, if a test run looks worse. |
+| `FAL_PROMPT` | no | Leave unset for the default (`v3`): a new photograph of the visitor wearing the costume, in the reference's pose, scene and light. `v2` is a blended face swap that carries the visitor's skin tone onto the body; `v1` is the original face swap. Switch if a test run looks worse — no code change needed. |
 | `KV_REST_API_URL` / `KV_REST_API_TOKEN` | for `/demo-qr` | Set automatically by Vercel's Upstash for Redis integration. See [Phone-controlled mode](#phone-controlled-mode-demo-qr). |
 
 Set `FAL_KEY` in **Vercel → Project → Settings → Environment Variables** (all
